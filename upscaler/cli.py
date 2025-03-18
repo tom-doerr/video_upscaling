@@ -18,10 +18,10 @@ def parse_args() -> argparse.Namespace:
     """Parse and validate command line arguments.
 
     Returns:
-        Parsed arguments namespace
+        argparse.Namespace: Parsed arguments
 
     Raises:
-        SystemExit: For invalid arguments or help request
+        SystemExit: For help request or argument parsing failure
     """
     parser = argparse.ArgumentParser(
         prog="upscale-video",
@@ -83,13 +83,14 @@ def main() -> None:
                 "Supported formats: .mp4, .avi, .mov"
             )
 
-        # Map and validate interpolation method
+        # Map interpolation names to OpenCV constants with quality notes
         interpolation_map = {
             # pylint: disable=no-member
-            "nearest": cv.INTER_NEAREST,  # Fastest but lowest quality
-            "linear": cv.INTER_LINEAR,  # Balance of speed/quality
-            "cubic": cv.INTER_CUBIC,  # Slower but higher quality
-            "lanczos": cv.INTER_LANCZOS4,  # Highest quality but slowest
+            # Disabling no-member because OpenCV constants are dynamically resolved
+            "nearest": cv.INTER_NEAREST,  # Fastest, lowest quality
+            "linear": cv.INTER_LINEAR,    # Balanced quality/speed
+            "cubic": cv.INTER_CUBIC,      # Higher quality, slower
+            "lanczos": cv.INTER_LANCZOS4, # Highest quality, very slow
         }
 
         try:

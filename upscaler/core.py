@@ -81,7 +81,10 @@ def _get_video_properties(cap: cv.VideoCapture) -> tuple[float, int, int]:
         cap: OpenCV video capture object
 
     Returns:
-        Tuple containing (fps: float, width: int, height: int)
+        Tuple containing:
+        - fps: Frame rate as float
+        - width: Frame width as integer
+        - height: Frame height as integer
 
     Raises:
         RuntimeError: If any property cannot be retrieved
@@ -149,7 +152,7 @@ def _select_video_codec() -> tuple[int, list[str]]:
 def upscale_video(
     input_path: Path,
     output_path: Path,
-    scale_factor: int,
+    scale_factor: float,
     interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method with validation.
@@ -172,9 +175,13 @@ def upscale_video(
     """
 
     # Validate and prepare paths first
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    if not output_path.parent.is_dir():
-        raise RuntimeError(f"Failed to create output directory: {output_path.parent}")
+    # Create output directory with validation
+    try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+    except OSError as e:
+        raise RuntimeError(
+            f"Failed to create output directory {output_path.parent}: {e.strerror}"
+        ) from e
     if not os.access(output_path.parent, os.W_OK):
         raise PermissionError(f"Write access denied to: {output_path.parent}")
 
