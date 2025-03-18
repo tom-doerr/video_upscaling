@@ -100,6 +100,57 @@ def process_frames(
         raise RuntimeError("No frames processed - input video may be corrupted")
 
 
+def _get_video_properties(cap: cv.VideoCapture) -> tuple[float, int, int]:
+    """Get and validate essential video properties from capture object.
+    
+    Args:
+        cap: OpenCV video capture object
+        
+    Returns:
+        Tuple of (fps, width, height)
+        
+    Raises:
+        RuntimeError: If any property is invalid
+    """
+    def get_checked_prop(prop_id: int, name: str) -> float:
+        """Get property with validation."""
+        value = cap.get(prop_id)
+        if value < 0:
+            raise RuntimeError(f"Failed to get {name}")
+        return value
+
+    fps = get_checked_prop(cv.CAP_PROP_FPS, "frame rate")
+    width = int(get_checked_prop(cv.CAP_PROP_FRAME_WIDTH, "frame width"))
+    height = int(get_checked_prop(cv.CAP_PROP_FRAME_HEIGHT, "frame height"))
+
+    if fps <= 0:
+        raise ValueError(f"Invalid frame rate {fps} - must be positive")
+    if width <= 0 or height <= 0:
+        raise ValueError(f"Invalid video dimensions {width}x{height} - must be positive")
+        
+    return fps, width, height
+
+def _create_video_writer(
+    output_path: Path,
+    fourcc: int,
+    fps: float,
+    output_width: int,
+    output_height: int,
+) -> cv.VideoWriter:
+    """Create and validate video writer object."""
+    out = cv.VideoWriter(
+        str(output_path), 
+        fourcc, 
+        fps, 
+        (output_width, output_height)
+        
+    if not out.isOpened():
+        raise RuntimeError(
+            f"Failed to initialize video writer for {output_path} - "
+            "verify directory permissions and codec support"
+        )
+    return out
+
 def upscale_video(
     input_path: Path,
     output_path: Path,
@@ -161,27 +212,8 @@ def upscale_video(
             "file may be corrupted, codec unsupported, or permissions invalid"
         )
 
-    # Get video properties with type hints
-    def get_video_prop(prop_id: int) -> float:
-        """Get video property with validation."""
-        value = cap.get(prop_id)
-        if value < 0:
-            raise RuntimeError(f"Failed to get video property {prop_id}")
-        return value
-
-    fps: float = get_video_prop(cv.CAP_PROP_FPS)  # pylint: disable=no-member
-    width: int = int(
-        get_video_prop(cv.CAP_PROP_FRAME_WIDTH)  # pylint: disable=no-member
-    )  # pylint: disable=no-member
-    height: int = int(
-        get_video_prop(cv.CAP_PROP_FRAME_HEIGHT)  # pylint: disable=no-member
-    )  # pylint: disable=no-member
-    if fps <= 0:
-        raise ValueError(f"Invalid frame rate {fps} - must be positive")
-    if width <= 0 or height <= 0:
-        raise ValueError(
-            f"Invalid video dimensions {width}x{height} - must be positive"
-        )
+    # Get validated video properties
+    fps, width, height = _get_video_properties(cap)
 
     # Validate interpolation method
     if interpolation not in VALID_INTERPOLATIONS:
@@ -205,8 +237,8 @@ def upscale_video(
             break
     validate_codec(fourcc)
     if not selected_codec:
-        raise RuntimeError(
-            "Failed to initialize any supported codec from: "
+        raise RuntimeError(  # pylint: disable=duplicate-code
+            "Failed to initialize any supported codec from: "  # noqa: E501
             f"{[c[0] for c in codec_priority]}"
         )
     output_width: int = width * scale_factor
@@ -215,15 +247,7 @@ def upscale_video(
         raise ValueError(
             f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
         )
-    out = cv.VideoWriter(  # pylint: disable=no-member
-        str(output_path), fourcc, fps, (output_width, output_height)
-    )
-
-    if not out.isOpened():
-        raise RuntimeError(
-            f"Failed to initialize video writer for {output_path} - "
-            "verify directory permissions and codec support"
-        )
+    out = _create_video_writer(output_path, fourcc, fps, output_width, output_height)
 
     try:
         # Process frames and write output
