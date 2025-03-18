@@ -138,12 +138,11 @@ def _create_video_writer(
     output_path: Path,
     fourcc: int,
     fps: float,
-    output_width: int,
-    output_height: int,
+    frame_size: tuple[int, int],
     codec_priority: list[str],
 ) -> cv.VideoWriter:
     """Create and validate video writer object."""
-    out = cv.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))
+    out = cv.VideoWriter(str(output_path), fourcc, fps, frame_size)
     if not out.isOpened():
         raise RuntimeError(
             f"Failed to initialize video writer for {output_path} - "
@@ -250,8 +249,7 @@ def upscale_video(
         output_path,
         _select_video_codec()[0],  # Get codec from selector
         fps,
-        output_width,
-        output_height,
+        (output_width, output_height),
         _select_video_codec()[1],  # Get codec priority list for error reporting
     )
 
