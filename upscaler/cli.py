@@ -6,6 +6,7 @@ Example usage:
 
 import argparse
 import sys
+import traceback
 from pathlib import Path
 
 import cv2 as cv  # pylint: disable=import-error,no-member
@@ -14,7 +15,6 @@ from .core import upscale_video
 
 
 def parse_args() -> argparse.Namespace:
-    """Parse command line arguments with validation."""
     """Parse and validate command line arguments.
 
     Returns:
@@ -112,7 +112,6 @@ def main() -> None:
     except Exception as e:  # pylint: disable=broad-except
         print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
         if args.debug:  # type: ignore
-            import traceback
             traceback.print_exc()
         sys.exit(3)
 

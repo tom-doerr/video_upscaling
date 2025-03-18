@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 from typing import Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error
-import numpy as np
 
 # pylint: disable=no-member,no-name-in-module
 VALID_INTERPOLATIONS = {
