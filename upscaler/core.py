@@ -127,7 +127,7 @@ def _get_video_properties(cap: cv.VideoCapture) -> tuple[float, int, int]:
         raise ValueError(f"Invalid frame rate {fps} - must be positive")
     if width <= 0 or height <= 0:
         raise ValueError(f"Invalid video dimensions {width}x{height} - must be positive")
-        
+
     return fps, width, height
 
 def _create_video_writer(
@@ -139,17 +139,33 @@ def _create_video_writer(
 ) -> cv.VideoWriter:
     """Create and validate video writer object."""
     out = cv.VideoWriter(
-        str(output_path), 
-        fourcc, 
-        fps, 
+        str(output_path),
+        fourcc,
+        fps,
         (output_width, output_height))
-        
     if not out.isOpened():
         raise RuntimeError(
             f"Failed to initialize video writer for {output_path} - "
             "verify directory permissions and codec support"
         )
     return out
+
+def _select_video_codec() -> tuple[int, str]:
+    """Select appropriate video codec with validation."""
+    codec_priority = [
+        ("avc1", "H.264/MPEG-4 AVC (modern compatibility)"),
+        ("mp4v", "MPEG-4 Part 2 (legacy)"),
+        ("X264", "X264 encoder"),
+    ]
+    
+    for codec, description in codec_priority:
+        fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
+        if fourcc != 0:
+            validate_codec(fourcc)
+            return fourcc, description
+    
+    validate_codec(0)  # Will throw error
+    raise RuntimeError("Code path should never be reached")  # For type checker
 
 def upscale_video(
     input_path: Path,
@@ -223,24 +239,7 @@ def upscale_video(
         )
 
     # Set up output video codec and writer with modern codec priority
-    codec_priority = [
-        ("avc1", "H.264/MPEG-4 AVC (modern compatibility)"),
-        ("mp4v", "MPEG-4 Part 2 (legacy)"),
-        ("X264", "X264 encoder"),
-    ]
-    fourcc = 0
-    selected_codec = None
-    for codec, description in codec_priority:
-        fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
-        if fourcc != 0:
-            selected_codec = description
-            break
-    validate_codec(fourcc)
-    if not selected_codec:
-        raise RuntimeError(  # pylint: disable=duplicate-code
-            "Failed to initialize any supported codec from: "  # noqa: E501
-            f"{[c[0] for c in codec_priority]}"
-        )
+    fourcc, selected_codec = _select_video_codec()
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
