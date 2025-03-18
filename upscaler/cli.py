@@ -35,11 +35,7 @@ def parse_args() -> argparse.Namespace:
         type=str,
         default="cubic",
         choices=["nearest", "linear", "cubic", "lanczos"],
-        help="Interpolation algorithm (default: cubic):\n"
-        "nearest = fastest, lowest quality\n"
-        "linear = good balance\n"
-        "cubic = high quality (default)\n"
-        "lanczos = highest quality, slowest",
+        help="Interpolation algorithm to use (default: %(default)s)",
     )
 
     return parser.parse_args()

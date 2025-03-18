@@ -1,9 +1,11 @@
 """Core video upscaling functionality using OpenCV."""
 
+"""Core video processing functionality with type hints and error handling."""
 import os
 from pathlib import Path
-from typing import Generator, Tuple
-import cv2 as cv  # pylint: disable=import-error,no-member
+from typing import Generator, Tuple, Dict
+import cv2 as cv  # pylint: disable=import-error
+# pylint: disable=no-member
 
 
 VALID_INTERPOLATIONS = {
@@ -31,7 +33,7 @@ def validate_codec(fourcc: int) -> None:
 
 
 def process_frames(
-    cap: cv.VideoCapture,  # pylint: disable=no-member
+    cap: cv.VideoCapture,
     scale_factor: int,
     interpolation: int,
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
@@ -78,7 +80,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
     input_path: Path,
     output_path: Path,
     scale_factor: int,
-    interpolation: int = cv.INTER_CUBIC,  # pylint: disable=no-member
+    interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method with validation.
 
@@ -130,9 +132,9 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
-        raise ValueError(
+        raise RuntimeError(
             f"Could not open video file {input_path} - "
-            "check if file exists and codec is supported"
+            "file may be corrupted, codec unsupported, or permissions invalid"
         )
 
     # Get video properties with type hints
@@ -167,8 +169,15 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
     # Set up output video codec and writer with prioritized codec list
     fourcc = 0
     attempted_codecs = []
-    for codec in [
-        "avc1",  # H.264/MPEG-4 AVC (best modern compatibility)
+    SUPPORTED_CODECS: Dict[str, str] = {
+        "avc1": "H.264/MPEG-4 AVC (best modern compatibility)",
+        "mp4v": "MPEG-4 Part 2 (legacy)",
+        "X264": "X264 encoder",
+        "XVID": "XVID MPEG-4"
+    }
+    
+    attempted_codecs = []
+    for codec in SUPPORTED_CODECS:
         "mp4v",  # MPEG-4 Part 2 (legacy)
         "X264",  # X264 encoder
         "XVID",  # XVID MPEG-4
