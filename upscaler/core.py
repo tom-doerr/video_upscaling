@@ -36,7 +36,7 @@ def process_frames(
     Yields:
         Tuple containing:
         - Original frame width
-        - Original frame height 
+        - Original frame height
         - Upscaled frame as numpy array
 
     Raises:
