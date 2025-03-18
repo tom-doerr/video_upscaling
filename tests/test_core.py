@@ -20,6 +20,7 @@ def test_upscale_image(tmp_path):
     assert result.shape == (200, 200, 3)
 
 def test_upscale_video(mocker, tmp_path):
+    """Test video upscaling functionality with mocked FFmpeg"""
     # Mock FFmpeg calls to avoid actual video processing
     mock_run = mocker.patch('subprocess.run')
     

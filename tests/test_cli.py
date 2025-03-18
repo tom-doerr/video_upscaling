@@ -8,7 +8,6 @@ def test_cli_image_upscaling(tmp_path):
     input_path = tmp_path / "input.jpg"
     output_path = tmp_path / "output.jpg"
     input_path.touch()
-    
     result = runner.invoke(main, [
         "image", str(input_path), str(output_path), "--scale", "2"
     ])
@@ -16,6 +15,7 @@ def test_cli_image_upscaling(tmp_path):
     assert output_path.exists()
 
 def test_cli_video_upscaling(tmp_path):
+    """Test video upscaling CLI command"""
     runner = CliRunner()
     input_path = tmp_path / "input.mp4"
     output_path = tmp_path / "output.mp4"
