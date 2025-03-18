@@ -183,10 +183,15 @@ def upscale_video(  # pylint: disable=too-many-branches
     """Upscale video frames using specified interpolation method with validation.
 
     Example:
-        >>> upscale_video(input_path=Path("input.mp4"), output_path=Path("output.mp4"), scale_factor=2.0)
+        >>> upscale_video(input_path=Path("input.mp4"),
+                         output_path=Path("output.mp4"),
+                         scale_factor=2.0)
 
     Example:
-        >>> upscale_video(input_path=Path("input.mp4"), output_path=Path("output.mp4"), scale_factor=2.0, interpolation=cv.INTER_CUBIC)
+        >>> upscale_video(input_path=Path("input.mp4"),
+                         output_path=Path("output.mp4"),
+                         scale_factor=2.0,
+                         interpolation=cv.INTER_CUBIC)
 
     Args:
         input_path: Path to existing input video file
