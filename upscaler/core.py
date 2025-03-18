@@ -22,14 +22,6 @@ def upscale_video(  # pylint: disable=too-many-locals
         ValueError: For invalid inputs or scaling parameters
         RuntimeError: If video processing fails at any stage
     """
-    """Upscale video frames using specified interpolation method.
-
-    Args:
-        input_path: Path to input video file
-        output_path: Path for output video file
-        scale_factor: Multiplier for video dimensions
-        interpolation: OpenCV interpolation method to use
-    """
     # Open input video with validation
     cap = cv2.VideoCapture(str(input_path))
     if not cap.isOpened():
