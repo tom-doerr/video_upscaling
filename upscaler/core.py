@@ -181,7 +181,59 @@ def _select_video_codec() -> (
     )
 
 
-def upscale_video(  # pylint: disable=too-many-branches
+def _validate_input_paths(input_path: Path, output_path: Path) -> None:
+    """Validate input/output paths meet requirements.
+    
+    Args:
+        input_path: Path to source video file
+        output_path: Path for output video file
+        
+    Raises:
+        FileNotFoundError: If input path doesn't exist
+        ValueError: For invalid path configurations
+        PermissionError: If output directory isn't writable
+    """
+    if not input_path.exists():
+        raise FileNotFoundError(f"Input file not found: {input_path}")
+    if not input_path.is_file():
+        raise ValueError(f"Input path is not a file: {input_path}")
+    if output_path.is_dir():
+        raise ValueError(f"Output path is a directory: {output_path}")
+    if not output_path.parent.exists():
+        raise ValueError(f"Output directory does not exist: {output_path.parent}")
+    if not os.access(output_path.parent, os.W_OK):
+        raise PermissionError(f"Output directory not writable: {output_path.parent}")
+
+
+def _select_output_codec() -> tuple[int, list[str]]:
+    """Select appropriate video codec with validation.
+    
+    Returns:
+        Tuple containing fourcc code and list of tried codecs
+        
+    Raises:
+        RuntimeError: If no valid codec could be initialized
+    """
+    codec_priority = [
+        "mp4v",  # MPEG-4 Part 2 (required for .mp4)
+        "h264",  # H.264/AVC (better compatibility than avc1)
+        "xvid",  # XVID (better for .avi)
+        "mjpg",  # Motion-JPEG (for .mov)
+    ]
+    for codec in codec_priority:
+        fourcc = cv.VideoWriter_fourcc(*codec)
+        if fourcc != 0:
+            validate_codec(fourcc)
+            return fourcc, codec_priority
+    validate_codec(0)  # Will throw error
+    raise RuntimeError(
+        "No valid video codec found - tried codecs: "
+        f"{codec_priority}. Verify OpenCV installation supports at least one "
+        "of these codecs."
+    )
+
+
+def upscale_video(
     input_path: Path,
     output_path: Path,
     scale_factor: float,
@@ -220,7 +272,14 @@ def upscale_video(  # pylint: disable=too-many-branches
     Maintains original frame rate and aspect ratio using streaming processing.
     """
 
-    # Validate and prepare paths first
+    # Validate input parameters and paths
+    _validate_input_paths(input_path, output_path)
+    if scale_factor < 1:
+        raise ValueError(
+            f"Scale factor must be >=1 (got {scale_factor}). "
+            "Use --scale 2 to double video dimensions"
+        )
+
     # Create output directory with validation
     try:
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -228,35 +287,6 @@ def upscale_video(  # pylint: disable=too-many-branches
         raise RuntimeError(
             f"Failed to create output directory {output_path.parent}: {e.strerror}"
         ) from e
-    if not os.access(output_path.parent, os.W_OK):
-        raise PermissionError(f"Write access denied to: {output_path.parent}")
-
-    def _validate_inputs() -> None:
-        """Validate all input parameters and paths.
-
-        Raises:
-            FileNotFoundError: If input file is missing
-            ValueError: For invalid paths or scaling parameters
-        """
-        if not input_path.exists():
-            raise FileNotFoundError(f"Input file not found: {input_path}")
-        if not input_path.is_file():
-            raise ValueError(f"Input path is not a file: {input_path}")
-        if output_path.is_dir():
-            raise ValueError(f"Output path is a directory: {output_path}")
-        if not output_path.parent.exists():
-            raise ValueError(f"Output directory does not exist: {output_path.parent}")
-        if not os.access(output_path.parent, os.W_OK):
-            raise PermissionError(
-                f"Output directory not writable: {output_path.parent}"
-            )
-        if scale_factor < 1:
-            raise ValueError(
-                f"Scale factor must be >=1 (got {scale_factor}). "
-                "Use --scale 2 to double video dimensions"
-            )
-
-    _validate_inputs()
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
@@ -275,8 +305,8 @@ def upscale_video(  # pylint: disable=too-many-branches
             f"Valid methods: {', '.join(VALID_INTERPOLATIONS.values())}"
         )
 
-    # Set up output video codec and writer with validated codec
-    codec_info = _select_video_codec()
+    # Set up output video codec and writer
+    codec_info = _select_output_codec()
     output_dims = (width * scale_factor, height * scale_factor)
     if output_dims[0] > 7680 or output_dims[1] > 4320:  # 8K resolution check
         raise ValueError(

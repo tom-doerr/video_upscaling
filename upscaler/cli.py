@@ -121,7 +121,7 @@ def main() -> None:
         sys.exit(1)
     except PermissionError as e:
         print(f"Permission error: {e}", file=sys.stderr)
-        sys.exit(3)
+        sys.exit(4)
     except (RuntimeError, OSError) as e:
         print(f"Processing error: {e}", file=sys.stderr)
         sys.exit(2)

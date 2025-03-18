@@ -9,7 +9,13 @@ from setuptools import setup, find_packages
 
 setup(
     name="upscaler",
-    version="0.1.1",
+    version="0.1.2",
+    keywords=["video", "upscaling", "computer-vision", "opencv"],
+    project_urls={
+        "Documentation": "https://github.com/example/video-upscaler/docs",
+        "Source": "https://github.com/example/video-upscaler",
+        "Download": "https://github.com/example/video-upscaler/releases",
+    },
     packages=find_packages(),
     install_requires=[
         "numpy",
