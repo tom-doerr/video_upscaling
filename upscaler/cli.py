@@ -58,7 +58,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> NoReturn:
+def main() -> None:
     """Command line interface entry point for video upscaling.
 
     Handles argument parsing, validation, and error reporting.
@@ -83,8 +83,8 @@ def main() -> NoReturn:
         # Validate output format
         if args.output.suffix.lower() not in (".mp4", ".avi", ".mov"):
             raise ValueError(
-                f"Unsupported output format '{args.output.suffix}'. "
-                "Supported formats: .mp4 (MPEG-4), .avi (AVI), .mov (QuickTime)"
+                f"Unsupported output format '{args.output.suffix}'. Must use one of: "
+                ".mp4 (MPEG-4), .avi (AVI), or .mov (QuickTime) (case-insensitive)"
             )
 
         # Map interpolation names to OpenCV constants with quality notes

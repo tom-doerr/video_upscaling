@@ -22,7 +22,7 @@ setup(
     },
     python_requires=">=3.8",
     author="Video Upscaler Maintainers",
-    author_email="maintainers@example.com",
+    author_email="dev@example.com",
     description="High-quality video upscaling with multiple interpolation algorithms",
     long_description=Path("README.md").read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",
