@@ -151,7 +151,7 @@ def _create_video_writer(
     return out
 
 
-def _select_video_codec() -> tuple[int, list[str]]:
+def _select_video_codec() -> tuple[int, list[str]]:  # pylint: disable=no-member
     """Select appropriate video codec with validation.
 
     Returns:

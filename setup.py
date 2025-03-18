@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "numpy",
-        "opencv-python-headless>=4.5.5.64",  # Pinned to version with Python 3.11 support
+        "opencv-python-headless>=4.5.5.64",
     ],
     entry_points={
         "console_scripts": [

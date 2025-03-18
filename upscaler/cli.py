@@ -114,6 +114,7 @@ def main() -> None:
             scale_factor=args.scale,
             interpolation=interpolation_method,
         )
+        print(f"Successfully upscaled video to {args.output}")
     except (ValueError, FileNotFoundError) as e:
         print(f"Input error: {e}", file=sys.stderr)
         sys.exit(1)
@@ -127,7 +128,7 @@ def main() -> None:
         print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
         if getattr(args, "debug", False):  # Handle debug flag safely
             traceback.print_exc()
-        sys.exit(4)
+        sys.exit(3)
 
 
 if __name__ == "__main__":
