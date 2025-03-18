@@ -94,9 +94,9 @@ def main() -> None:
     except (RuntimeError, OSError) as e:
         print(f"Processing error: {e}", file=sys.stderr)
         sys.exit(2)
-    except Exception as e:  # pylint: disable=broad-except,consider-using-sys-exit
+    except Exception as e:  # pylint: disable=broad-except
         print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
-        sys.exit(3)
+        sys.exit(3)  # Consider using sys.exc_info() for more details if needed
 
 
 if __name__ == "__main__":

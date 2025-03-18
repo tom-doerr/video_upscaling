@@ -146,24 +146,24 @@ def _create_video_writer(
     if not out.isOpened():
         raise RuntimeError(
             f"Failed to initialize video writer for {output_path} - "
-            "verify directory permissions and codec support"
+            f"tried codecs: {codec_priority}. Verify directory permissions and codec support."
         )
     return out
 
 
-def _select_video_codec() -> tuple[int, str]:
+def _select_video_codec() -> int:
     """Select appropriate video codec with validation."""
     codec_priority = [
-        ("avc1", "H.264/MPEG-4 AVC"),  # Modern compatibility
-        ("mp4v", "MPEG-4 Part 2"),  # Legacy format
-        ("X264", "X264 encoder"),  # Alternative encoder
-        ("MJPG", "Motion-JPEG"),  # Common fallback
+        "avc1",  # H.264/MPEG-4 AVC (modern compatibility)
+        "mp4v",  # MPEG-4 Part 2 (legacy format)
+        "X264",  # Alternative encoder
+        "MJPG",  # Motion-JPEG (common fallback)
     ]
-    for codec, description in codec_priority:
+    for codec in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
             validate_codec(fourcc)
-            return fourcc, description
+            return fourcc
     validate_codec(0)  # Will throw error
     raise RuntimeError("Code path should never be reached")  # For type checker
 
