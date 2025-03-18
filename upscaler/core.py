@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from typing import Generator, Tuple, Dict
+from typing import Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error
 import numpy as np
 
@@ -222,7 +222,8 @@ def upscale_video(
             break
     validate_codec(fourcc)
     if not selected_codec:
-        raise RuntimeError(f"Failed to initialize any supported codec from {[c[0] for c in codec_priority]}")
+        raise RuntimeError("Failed to initialize any supported codec from: " 
+                          f"{[c[0] for c in codec_priority]}")
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
