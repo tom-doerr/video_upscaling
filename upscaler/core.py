@@ -55,8 +55,8 @@ def process_frames(
     if frame_count == 0:
         raise RuntimeError("No frames processed - input video may be corrupted")
 
-def upscale_video(
-    input_path: Path,  # pylint: disable=too-many-locals
+def upscale_video(  # pylint: disable=too-many-locals
+    input_path: Path,
     output_path: Path,
     scale_factor: int,
     interpolation: int = cv.INTER_CUBIC,
