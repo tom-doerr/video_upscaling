@@ -113,7 +113,7 @@ def upscale_video(  # pylint: disable=too-many-locals
         if output_path.is_dir():
             raise ValueError(f"Output path is a directory: {output_path}")
         if scale_factor < 1:
-            raise ValueError(f"Scale factor must be ≥1 (got {scale_factor})")
+            raise ValueError(f"Scale factor must be >=1 (got {scale_factor})")
 
     _validate_inputs()
     output_path.parent.mkdir(parents=True, exist_ok=True)

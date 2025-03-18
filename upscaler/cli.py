@@ -51,7 +51,7 @@ def main() -> None:
         args = parse_args()
         # Validate scale factor early
         if args.scale < 1:
-            raise ValueError(f"Invalid scale factor {args.scale} - must be >=1")
+            raise ValueError(f"Invalid scale factor {args.scale} - must be >= 1")
 
         # Validate output format
         if args.output.suffix.lower() not in (".mp4", ".avi", ".mov"):
