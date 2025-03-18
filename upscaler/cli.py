@@ -47,13 +47,13 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     """Command line interface entry point for video upscaling.
-    
+
     Exit codes:
         0: Success
         1: Input validation error
         2: Processing error
         3: Unexpected error
-    
+
     Raises:
         SystemExit: Always exits with status code
     """

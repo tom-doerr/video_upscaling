@@ -119,7 +119,9 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
         if not output_path.parent.exists():
             raise ValueError(f"Output directory does not exist: {output_path.parent}")
         if not os.access(output_path.parent, os.W_OK):
-            raise PermissionError(f"Output directory not writable: {output_path.parent}")
+            raise PermissionError(
+                f"Output directory not writable: {output_path.parent}"
+            )
         if scale_factor < 1:
             raise ValueError(f"Scale factor must be >=1 (got {scale_factor})")
 
@@ -168,8 +170,8 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
     for codec in [
         "avc1",  # H.264/MPEG-4 AVC (best modern compatibility)
         "mp4v",  # MPEG-4 Part 2 (legacy)
-        "X264",   # X264 encoder
-        "XVID",   # XVID MPEG-4
+        "X264",  # X264 encoder
+        "XVID",  # XVID MPEG-4
     ]:
         attempted_codecs.append(codec)
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
