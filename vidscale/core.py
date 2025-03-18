@@ -44,7 +44,7 @@ def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) ->
     """
     if scale_factor < 1:
         raise ValueError("Scale factor must be ≥1")
-        
+
     # Check FFmpeg availability
     try:
         subprocess.run(["ffmpeg", "-version"], check=True, capture_output=True)
