@@ -27,12 +27,16 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         RuntimeError: If video processing fails at any stage
         FileNotFoundError: If input file doesn't exist
     """
-    # Validate input/output paths before processing
-    if not input_path.is_file():
-        raise FileNotFoundError(f"Input file not found: {input_path}")
-    if output_path.is_dir():
-        raise ValueError(f"Output path is a directory: {output_path}")
-    # Ensure output directory exists
+    def _validate_inputs() -> None:
+        """Validate all input parameters and paths."""
+        if not input_path.is_file():
+            raise FileNotFoundError(f"Input file not found: {input_path}")
+        if output_path.is_dir():
+            raise ValueError(f"Output path is a directory: {output_path}")
+        if scale_factor < 1:
+            raise ValueError(f"Scale factor must be ≥1 (got {scale_factor})")
+
+    _validate_inputs()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))
