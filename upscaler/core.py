@@ -76,7 +76,7 @@ def process_frames(
         raise RuntimeError("No frames processed - input video may be corrupted")
 
 
-def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
+def upscale_video(  # pylint: disable=too-many-locals,too-many-statements,too-many-branches
     input_path: Path,
     output_path: Path,
     scale_factor: int,
