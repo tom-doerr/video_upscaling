@@ -155,8 +155,9 @@ def upscale_video(  # pylint: disable=too-many-locals
         )
 
     # Set up output video codec and writer
-    # Try more modern codecs first before falling back to MP4V
-    for codec in ["avc1", "mp4v", "X264"]:
+    # Try codecs in reliability order with fallbacks
+    fourcc = 0
+    for codec in ["mp4v", "avc1", "X264"]:  # MPEG-4 Part 2, then H.264, then X264
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
             break
@@ -182,8 +183,10 @@ def upscale_video(  # pylint: disable=too-many-locals
         for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
             if (upscaled.shape[1], upscaled.shape[0]) != (output_width, output_height):
                 raise RuntimeError(
-                    f"Frame size mismatch: Expected {output_width}x{output_height}, "
-                    f"got {upscaled.shape[1]}x{upscaled.shape[0]}"
+                    f"Frame size mismatch at frame {frame_count}: "
+                    f"Expected {output_width}x{output_height}, "
+                    f"got {upscaled.shape[1]}x{upscaled.shape[0]}. "
+                    "This could indicate memory corruption or hardware acceleration issues."
                 )
             out.write(upscaled)
 
