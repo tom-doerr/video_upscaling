@@ -88,9 +88,9 @@ def main() -> None:
             # pylint: disable=no-member
             # Disabling no-member because OpenCV constants are dynamically resolved
             "nearest": cv.INTER_NEAREST,  # Fastest, lowest quality
-            "linear": cv.INTER_LINEAR,    # Balanced quality/speed
-            "cubic": cv.INTER_CUBIC,      # Higher quality, slower
-            "lanczos": cv.INTER_LANCZOS4, # Highest quality, very slow
+            "linear": cv.INTER_LINEAR,  # Balanced quality/speed
+            "cubic": cv.INTER_CUBIC,  # Higher quality, slower
+            "lanczos": cv.INTER_LANCZOS4,  # Highest quality, very slow
         }
 
         try:
