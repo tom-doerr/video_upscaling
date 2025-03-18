@@ -1,7 +1,7 @@
 """Video upscaling package providing spatial resolution enhancement.
 
 Features:
-- Multiple interpolation algorithms (nearest, linear, cubic, Lanczos)
+- Multiple interpolation algorithms (nearest, bilinear, bicubic, Lanczos)
 - Preservation of original frame rate and aspect ratio
 - Streaming processing for memory efficiency
 - Validation of input/output parameters

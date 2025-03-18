@@ -1,6 +1,7 @@
 """Core video upscaling functionality using OpenCV with type hints and error handling."""
 
 import os
+import itertools
 from pathlib import Path
 from typing import Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error
@@ -78,8 +79,7 @@ def process_frames(
         RuntimeError: If frame processing fails at any stage
             or empty frame is received
     """
-    frame_count = 0
-    while cap.isOpened():
+    for frame_count in itertools.count(start=0):
         ret, frame = cap.read()
         if not ret:
             break
@@ -154,9 +154,9 @@ def _create_video_writer(
 def _select_video_codec() -> tuple[int, str]:
     """Select appropriate video codec with validation."""
     codec_priority = [
-        ("avc1", "H.264/MPEG-4 AVC (modern compatibility)"),
-        ("mp4v", "MPEG-4 Part 2 (legacy)"),
-        ("X264", "X264 encoder"),
+        ("avc1", "H.264/MPEG-4 AVC"),  # Modern compatibility
+        ("mp4v", "MPEG-4 Part 2"),     # Legacy format
+        ("X264", "X264 encoder"),      # Alternative encoder
     ]
     for codec, description in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
