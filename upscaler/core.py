@@ -151,7 +151,6 @@ def _create_video_writer(
     return out
 
 
-
 def _validate_input_paths(input_path: Path, output_path: Path) -> None:
     """Validate input/output paths meet requirements.
 
