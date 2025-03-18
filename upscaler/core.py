@@ -60,7 +60,7 @@ def process_frames(
         if not ret:
             break
         if frame is None or frame.size == 0:
-            raise RuntimeError(f"Received invalid frame at position {frame_count}")
+            raise RuntimeError(f"Received invalid frame at position {frame_count} (0-based index)")
 
         upscaled = cv.resize(
             frame,
@@ -184,16 +184,21 @@ def upscale_video(  # pylint: disable=too-many-branches
 
     Maintains original frame rate and aspect ratio using streaming processing.
 
-    Example:
-        >>> upscale_video(input_path=Path("input.mp4"),
-                         output_path=Path("output.mp4"),
-                         scale_factor=2.0)
-
-    Example:
-        >>> upscale_video(input_path=Path("input.mp4"),
-                         output_path=Path("output.mp4"),
-                         scale_factor=2.0,
-                         interpolation=cv.INTER_CUBIC)
+    Examples:
+        ```python
+        upscale_video(
+            input_path=Path("input.mp4"),
+            output_path=Path("output.mp4"), 
+            scale_factor=2.0
+        )
+        
+        upscale_video(
+            input_path=Path("input.mp4"),
+            output_path=Path("output.mp4"),
+            scale_factor=2.0,
+            interpolation=cv.INTER_CUBIC
+        )
+        ```
 
     Args:
         input_path: Path to existing input video file
