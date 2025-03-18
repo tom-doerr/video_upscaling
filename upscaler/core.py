@@ -1,15 +1,17 @@
 """Core video upscaling functionality using OpenCV."""
+
 from pathlib import Path
 import cv2  # pylint: disable=import-error
+
 
 def upscale_video(
     input_path: Path,
     output_path: Path,
     scale_factor: int,
-    interpolation: int = cv2.INTER_CUBIC
+    interpolation: int = cv2.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method.
-    
+
     Args:
         input_path: Path to input video file
         output_path: Path for output video file
@@ -26,12 +28,9 @@ def upscale_video(
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     # Set up output video
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     out = cv2.VideoWriter(
-        str(output_path),
-        fourcc,
-        fps,
-        (width * scale_factor, height * scale_factor)
+        str(output_path), fourcc, fps, (width * scale_factor, height * scale_factor)
     )
 
     try:
@@ -45,7 +44,7 @@ def upscale_video(
                 None,
                 fx=scale_factor,
                 fy=scale_factor,
-                interpolation=interpolation
+                interpolation=interpolation,
             )
             out.write(upscaled)
     finally:
