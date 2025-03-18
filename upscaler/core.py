@@ -21,13 +21,15 @@ def upscale_video(
     # Open input video with validation
     cap = cv2.VideoCapture(str(input_path))
     if not cap.isOpened():
-        raise ValueError(f"Could not open video file {input_path} - check if file exists and codec is supported")
+        raise ValueError(
+            f"Could not open video file {input_path} - "
+            "check if file exists and codec is supported"
+        )
 
     # Get video properties with explicit type conversion
     fps: float = cap.get(cv2.CAP_PROP_FPS)
     width: int = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height: int = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    
     # Validate scaling parameters
     if scale_factor < 1:
         raise ValueError(f"Scale factor must be ≥1, got {scale_factor}")
@@ -36,7 +38,6 @@ def upscale_video(
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     output_width = width * scale_factor
     output_height = height * scale_factor
-    
     out = cv2.VideoWriter(
         str(output_path), fourcc, fps, (output_width, output_height)
     )
@@ -53,7 +54,6 @@ def upscale_video(
             ret, frame = cap.read()
             if not ret:
                 break
-        
             # Upscale frame with validation
             if frame.size == 0:
                 raise RuntimeError(f"Received empty frame at position {frame_count}")
