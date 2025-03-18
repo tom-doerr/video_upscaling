@@ -38,10 +38,8 @@ def upscale_video(
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     output_width = width * scale_factor
     output_height = height * scale_factor
-    out = cv2.VideoWriter(
-        str(output_path), fourcc, fps, (output_width, output_height)
-    )
-        
+    out = cv2.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))
+
     if not out.isOpened():
         raise RuntimeError(
             f"Failed to initialize video writer for {output_path} - "
@@ -57,7 +55,7 @@ def upscale_video(
             # Upscale frame with validation
             if frame.size == 0:
                 raise RuntimeError(f"Received empty frame at position {frame_count}")
-                
+
             upscaled = cv2.resize(
                 frame,
                 None,
@@ -67,10 +65,10 @@ def upscale_video(
             )
             out.write(upscaled)
             frame_count += 1
-            
+
         if frame_count == 0:
             raise RuntimeError("No frames processed - input video may be corrupted")
-            
+
     except cv2.error as e:
         raise RuntimeError(f"OpenCV processing error: {e}") from e
     finally:
