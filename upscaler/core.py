@@ -223,10 +223,8 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements,too-ma
         frame_count = 0
         for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
             frame_count += 1
-            if (
-                upscaled.shape[1] != output_width  # type: ignore
-                or upscaled.shape[0] != output_height
-            ):  # type: ignore
+            if (upscaled.shape[1] != output_width 
+                or upscaled.shape[0] != output_height):
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
                     f"Expected {output_width}x{output_height}, "
