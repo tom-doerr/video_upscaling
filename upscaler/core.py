@@ -107,7 +107,7 @@ def upscale_video(
     interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method with validation.
-    
+
     Example:
         >>> upscale_video(Path("input.mp4"), Path("output.mp4"), 2, cv.INTER_CUBIC)
 
@@ -205,8 +205,10 @@ def upscale_video(
             break
     validate_codec(fourcc)
     if not selected_codec:
-        raise RuntimeError("Failed to initialize any supported codec from: " 
-                          f"{[c[0] for c in codec_priority]}")
+        raise RuntimeError(
+            "Failed to initialize any supported codec from: "
+            f"{[c[0] for c in codec_priority]}"
+        )
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
