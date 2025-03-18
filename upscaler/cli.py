@@ -50,8 +50,8 @@ def parse_args() -> argparse.Namespace:
             "nearest",
             "linear",
             "cubic",
-            "lanczos4",
-        ],  # Match actual OpenCV constant names
+            "lanczos",
+        ],
         help="Interpolation algorithm (nearest=fastest, lanczos=best quality)",
     )
     parser.add_argument(
