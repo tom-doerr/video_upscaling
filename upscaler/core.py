@@ -183,11 +183,11 @@ def _select_video_codec() -> (
 
 def _validate_input_paths(input_path: Path, output_path: Path) -> None:
     """Validate input/output paths meet requirements.
-    
+
     Args:
         input_path: Path to source video file
         output_path: Path for output video file
-        
+
     Raises:
         FileNotFoundError: If input path doesn't exist
         ValueError: For invalid path configurations
@@ -207,10 +207,10 @@ def _validate_input_paths(input_path: Path, output_path: Path) -> None:
 
 def _select_output_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation.
-    
+
     Returns:
         Tuple containing fourcc code and list of tried codecs
-        
+
     Raises:
         RuntimeError: If no valid codec could be initialized
     """
