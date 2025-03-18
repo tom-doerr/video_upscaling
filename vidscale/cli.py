@@ -44,7 +44,7 @@ def video(input_path, output_path, scale):
         output_path.parent.mkdir(parents=True, exist_ok=True)
         if output_path.exists():
             raise FileExistsError(f"Output path {output_path} already exists")
-        
+
         upscale_video(input_path, output_path, scale)
         click.echo(f"Successfully upscaled video by {scale}x")
     except FileExistsError as e:
