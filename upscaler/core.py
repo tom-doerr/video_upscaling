@@ -222,6 +222,8 @@ def upscale_video(
             raise RuntimeError(f"Failed to create output directory: {output_path.parent}")
         if not os.access(output_path.parent, os.W_OK):
             raise PermissionError(f"Write access denied to: {output_path.parent}")
+    except Exception as e:
+        raise
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
