@@ -1,8 +1,10 @@
 """Core video upscaling functionality using OpenCV with type hints and error handling."""
+
 import os
 from pathlib import Path
 from typing import Generator, Tuple, Dict
 import cv2 as cv  # pylint: disable=import-error
+
 # pylint: disable=no-member
 
 
