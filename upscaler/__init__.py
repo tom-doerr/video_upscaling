@@ -1,6 +1,6 @@
-"""Video upscaling package providing spatial resolution enhancement.
-
 from __future__ import annotations
+
+"""Video upscaling package providing spatial resolution enhancement.
 
 Features:
 - Multiple interpolation algorithms (nearest, linear, cubic, Lanczos)

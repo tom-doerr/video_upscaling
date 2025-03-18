@@ -8,10 +8,10 @@ import numpy as np
 
 # pylint: disable=no-member,no-name-in-module
 VALID_INTERPOLATIONS = {
-    cv.INTER_NEAREST: "nearest neighbor",  # pylint: disable=no-member
-    cv.INTER_LINEAR: "bilinear",  # pylint: disable=no-member
-    cv.INTER_CUBIC: "bicubic",  # pylint: disable=no-member
-    cv.INTER_LANCZOS4: "Lanczos",  # pylint: disable=no-member
+    cv.INTER_NEAREST: "nearest neighbor",
+    cv.INTER_LINEAR: "bilinear",
+    cv.INTER_CUBIC: "bicubic",
+    cv.INTER_LANCZOS4: "Lanczos",
 }
 
 
@@ -83,10 +83,10 @@ def process_frames(
         ret, frame = cap.read()
         if not ret:
             break
-        if frame.size == 0:
-            raise RuntimeError(f"Received empty frame at position {frame_count}")
+        if frame is None or frame.size == 0:
+            raise RuntimeError(f"Received invalid frame at position {frame_count}")
 
-        upscaled = cv.resize(  # pylint: disable=no-member
+        upscaled = cv.resize(
             frame,
             None,
             fx=scale_factor,
