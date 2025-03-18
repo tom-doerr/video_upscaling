@@ -1,7 +1,6 @@
 """Core video upscaling functionality using OpenCV with type hints and error handling."""
 
 import os
-import itertools
 from pathlib import Path
 from typing import Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error
@@ -240,17 +239,24 @@ def upscale_video(
         )
 
     # Set up output video codec and writer with modern codec priority
-    fourcc = _select_video_codec()[0]  # Get first element of tuple (codec, description)
     output_width, output_height = width * scale_factor, height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
         raise ValueError(
             f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
         )
-    out = _create_video_writer(output_path, fourcc, fps, output_width, output_height)
+    out = _create_video_writer(
+        output_path,
+        _select_video_codec()[0],  # Get codec from selector
+        fps,
+        output_width,
+        output_height
+    )
 
     try:
         # Process frames and write output
-        for frame_count, (_, _, upscaled) in enumerate(process_frames(cap, scale_factor, interpolation), 1):
+        for frame_count, (_, _, upscaled) in enumerate(
+            process_frames(cap, scale_factor, interpolation), 1
+        ):
             if upscaled.shape[1] != output_width or upscaled.shape[0] != output_height:
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
