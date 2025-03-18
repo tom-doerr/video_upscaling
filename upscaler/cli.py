@@ -83,7 +83,7 @@ def main() -> None:
             interpolation=interpolation_method,
         )
     except (ValueError, RuntimeError, FileNotFoundError, OSError) as e:
-        error_msg = f"Error ({type(e).__name__}): {e}"
+        error_msg = f"Error processing {args.input}: {e.__class__.__name__} - {e}"
         print(error_msg, file=sys.stderr)
         sys.exit(1)
 

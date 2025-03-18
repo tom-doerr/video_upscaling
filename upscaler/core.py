@@ -32,8 +32,21 @@ def validate_codec(fourcc: int) -> None:
 def process_frames(
     cap: cv.VideoCapture,  # pylint: disable=no-member
     scale_factor: int,
-    interpolation: int,  # pylint: disable=no-member
+    interpolation: int,
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
+    """Process video frames with enhanced validation and error handling.
+    
+    Args:
+        cap: OpenCV video capture object (must be already opened)
+        scale_factor: Integer scaling multiplier (≥1)
+        interpolation: OpenCV interpolation method constant
+
+    Yields:
+        Tuple of (original_width, original_height, upscaled_frame)
+
+    Raises:
+        RuntimeError: If frame processing fails at any stage
+    """
     """Process video frames and yield upscaled versions with metadata.
 
     Args:
@@ -159,11 +172,12 @@ def upscale_video(  # pylint: disable=too-many-locals
     # Set up output video codec and writer
     # Try codecs in reliability order with fallbacks (H.264 first for modern compatibility)
     fourcc = 0
+    # Try codecs in reliability order with fallbacks
     for codec in [
-        "avc1",
-        "mp4v",
-        "X264",
-    ]:  # H.264/MPEG-4 AVC, then MPEG-4 Part 2, then X264
+        "mp4v",  # MPEG-4 Part 2 (better cross-platform compatibility)
+        "avc1",  # H.264/MPEG-4 AVC
+        "X264",  # X264 encoder
+    ]:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
             break
@@ -189,7 +203,7 @@ def upscale_video(  # pylint: disable=too-many-locals
         frame_count = 0
         for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
             frame_count += 1
-            if (upscaled.shape[1], upscaled.shape[0]) != (output_width, output_height):
+            if (upscaled.shape[1], upscaled.shape[0]) != (output_width, output_height):  # type: ignore
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
                     f"Expected {output_width}x{output_height}, "

@@ -1,0 +1,7 @@
+[MASTER]
+
+[MESSAGES CONTROL]
+disable=no-member
+
+[TYPECHECK]
+ignored-modules=cv2
