@@ -37,9 +37,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("output", type=Path, help="Output video path")
     parser.add_argument(
         "--scale",
-        type=int,
+        type=float,
         required=True,
-        help="Scaling factor (integer multiplier, e.g. 2 doubles each dimension)",
+        help="Scaling factor (e.g. 2.0 doubles dimensions, 1.5 increases by 50%)",
     )
     parser.add_argument(
         "--interpolation",
@@ -80,7 +80,7 @@ def main() -> None:
         if args.output.suffix.lower() not in (".mp4", ".avi", ".mov"):
             raise ValueError(
                 f"Unsupported output format '{args.output.suffix}'. "
-                "Supported formats: .mp4, .avi, .mov"
+                "Supported formats: .mp4, .avi, .mov (case-insensitive)"
             )
 
         # Map interpolation names to OpenCV constants with quality notes

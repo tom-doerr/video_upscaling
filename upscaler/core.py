@@ -140,9 +140,10 @@ def _select_video_codec() -> tuple[int, list[str]]:
         RuntimeError: If no valid codec could be initialized
     """
     codec_priority = [
-        "h264",  # Broadly compatible H.264
-        "avc1",  # H.264/MPEG-4 AVC
-        "mp4v",  # MPEG-4 Part 2
+        "mp4v",  # MPEG-4 Part 2 (required for .mp4)
+        "avc1",  # H.264/AVC
+        "xvid",  # XVID (better for .avi)
+        "mjpg",  # Motion-JPEG (for .mov)
     ]
     for codec in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
@@ -162,7 +163,7 @@ def upscale_video(
     """Upscale video frames using specified interpolation method with validation.
 
     Example:
-        >>> upscale_video(Path("input.mp4"), Path("output.mp4"), 2, cv.INTER_CUBIC)
+        >>> upscale_video(Path("input.mp4"), Path("output.mp4"), 2.0, cv.INTER_CUBIC)
 
     Args:
         input_path: Path to existing input video file
