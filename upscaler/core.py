@@ -180,7 +180,10 @@ def upscale_video(  # pylint: disable=too-many-locals
 
     try:
         # Process frames and write output
+        frame_count = 0
         for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
+            frame_count += 1
+            frame_count += 1  # Remove this duplicate increment if it exists
             if (upscaled.shape[1], upscaled.shape[0]) != (output_width, output_height):
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "

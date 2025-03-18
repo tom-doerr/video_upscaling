@@ -7,7 +7,6 @@ Example usage:
 import argparse
 import sys
 from pathlib import Path
-from typing import cast
 
 import cv2 as cv  # pylint: disable=import-error,no-member
 from .core import upscale_video
@@ -83,7 +82,7 @@ def main() -> None:
             scale_factor=args.scale,
             interpolation=interpolation_method,
         )
-    except Exception as e:
+    except (ValueError, RuntimeError, FileNotFoundError, OSError) as e:
         error_msg = f"Error ({type(e).__name__}): {e}"
         file = sys.stderr
         if isinstance(e, FileNotFoundError):
