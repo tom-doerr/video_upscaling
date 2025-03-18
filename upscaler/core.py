@@ -151,7 +151,7 @@ def _create_video_writer(
     return out
 
 
-def _select_video_codec() -> tuple[int, list[str]]:  # pylint: disable=no-member
+def _select_video_codec() -> tuple[int, list[str]]:  # pylint: disable=no-member,unsubscriptable-object
     """Select appropriate video codec with validation.
 
     Returns:
@@ -172,7 +172,9 @@ def _select_video_codec() -> tuple[int, list[str]]:  # pylint: disable=no-member
             validate_codec(fourcc)
             return fourcc, codec_priority
     validate_codec(0)  # Will throw error
-    raise RuntimeError("Code path should never be reached")  # For type checker
+    raise RuntimeError("No valid video codec found - tried codecs: "  # pragma: no cover
+                      f"{codec_priority}. Verify OpenCV installation supports at least one "
+                      "of these codecs.")
 
 
 def upscale_video(  # pylint: disable=too-many-branches
@@ -302,7 +304,8 @@ def upscale_video(  # pylint: disable=too-many-branches
             out.write(upscaled)
 
     except cv.error as e:  # pylint: disable=no-member
-        raise RuntimeError(f"OpenCV processing failed: {e}") from e
+        raise RuntimeError(f"OpenCV processing failed: {e}. Check that input is a valid video file "
+                         f"and output codec supports {scale_factor}x scaling.") from e
     finally:
         # Ensure proper resource cleanup even if errors occur
         cap.release()

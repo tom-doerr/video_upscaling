@@ -71,9 +71,10 @@ def main() -> None:
 
     Exit codes:
         0: Success
-        1: Input validation error
-        2: Processing error
-        3: Unexpected error
+        1: Input validation error (invalid arguments/files)
+        2: Processing error (video processing failed)
+        3: Permission error
+        4: Unexpected error
 
     Raises:
         SystemExit: Always exits with status code indicating success or failure
