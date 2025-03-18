@@ -16,6 +16,7 @@ def main() -> None:
     Raises:
         ValueError: For invalid inputs or scaling parameters
         RuntimeError: If video processing fails at any stage
+        KeyError: If invalid interpolation method is specified
     """
     parser = argparse.ArgumentParser(
         description="Upscale video dimensions using spatial interpolation methods",
@@ -31,7 +32,7 @@ def main() -> None:
         type=str,
         default="cubic",
         choices=["nearest", "linear", "cubic", "lanczos"],
-        help="Interpolation method",
+        help="Interpolation method (nearest=fastest, lanczos=best quality)",
     )
 
     args = parser.parse_args()

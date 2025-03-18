@@ -28,7 +28,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         FileNotFoundError: If input file doesn't exist
     """
 
-    def _validate_inputs() -> None:
+    def _validate_inputs() -> None:  # pylint: disable=missing-function-docstring
         """Validate all input parameters and paths."""
         if not input_path.is_file():
             raise FileNotFoundError(f"Input file not found: {input_path}")
@@ -47,10 +47,17 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
             "check if file exists and codec is supported"
         )
 
-    # Get and validate video properties
-    fps: float = cap.get(cv.CAP_PROP_FPS)
-    width: int = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
-    height: int = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+    # Get video properties with type hints
+    def get_video_prop(prop_id: int) -> float:
+        """Get video property with validation."""
+        value = cap.get(prop_id)
+        if value < 0:
+            raise RuntimeError(f"Failed to get video property {prop_id}")
+        return value
+
+    fps: float = get_video_prop(cv.CAP_PROP_FPS)
+    width: int = int(get_video_prop(cv.CAP_PROP_FRAME_WIDTH))
+    height: int = int(get_video_prop(cv.CAP_PROP_FRAME_HEIGHT))
     if fps <= 0:
         raise ValueError(f"Invalid frame rate {fps} - must be positive")
     if width <= 0 or height <= 0:
