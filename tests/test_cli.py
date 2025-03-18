@@ -47,7 +47,6 @@ def test_cli_nonexistent_input(tmp_path):
     """Test handling of non-existent input file"""
     runner = CliRunner()
     output_path = tmp_path / "output.jpg"
-    
     result = runner.invoke(
         main, ["image", "nonexistent.jpg", str(output_path), "--scale", "2"]
     )

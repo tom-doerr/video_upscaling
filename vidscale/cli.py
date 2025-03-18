@@ -18,12 +18,11 @@ def image(input_path, output_path, scale):
     """Upscale an image"""
     input_path = Path(input_path)
     output_path = Path(output_path)
-    
+
     if not input_path.exists():
         raise click.BadParameter(f"Input file {input_path} does not exist")
-        
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    
     try:
         upscale_image(input_path, output_path, scale)
         click.echo(f"Successfully upscaled image by {scale}x")
@@ -40,12 +39,11 @@ def video(input_path, output_path, scale):
     """Upscale a video"""
     input_path = Path(input_path)
     output_path = Path(output_path)
-    
+
     if not input_path.exists():
         raise click.BadParameter(f"Input file {input_path} does not exist")
-        
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    
     try:
         upscale_video(input_path, output_path, scale)
         click.echo(f"Successfully upscaled video by {scale}x")

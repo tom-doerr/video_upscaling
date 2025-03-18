@@ -3,7 +3,7 @@
 from pathlib import Path
 import subprocess
 import shutil
-import cv2
+import cv2  # pylint: disable=import-error
 
 
 def upscale_image(input_path: Path, output_path: Path, scale_factor: int = 2) -> None:
