@@ -19,16 +19,14 @@ def image(input_path, output_path, scale):
     input_path = Path(input_path)
     output_path = Path(output_path)
 
-    if not input_path.exists():
-        raise click.BadParameter(f"Input file {input_path} does not exist")
-
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    
     try:
         upscale_image(input_path, output_path, scale)
         click.echo(f"Successfully upscaled image by {scale}x")
     except Exception as e:
-        click.echo(f"Error processing image: {str(e)}", err=True)
-        raise click.Abort()
+        click.echo(f"Error: {str(e)}", err=True)
+        raise SystemExit(1) from e
 
 
 @main.command()
@@ -40,13 +38,11 @@ def video(input_path, output_path, scale):
     input_path = Path(input_path)
     output_path = Path(output_path)
 
-    if not input_path.exists():
-        raise click.BadParameter(f"Input file {input_path} does not exist")
-
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    
     try:
         upscale_video(input_path, output_path, scale)
         click.echo(f"Successfully upscaled video by {scale}x")
     except Exception as e:
-        click.echo(f"Error processing video: {str(e)}", err=True)
-        raise click.Abort()
+        click.echo(f"Error: {str(e)}", err=True)
+        raise SystemExit(1) from e
