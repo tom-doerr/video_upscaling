@@ -20,6 +20,9 @@ def test_upscale_image(tmp_path):
     # Verify output
     result = cv2.imread(str(output_path))
     assert result.shape == (200, 200, 3)
+    assert result.dtype == np.uint8
+    # Verify some pixel values changed (not just black/white)
+    assert np.any(result != test_img.repeat(2, axis=0).repeat(2, axis=1))
 
 
 def test_upscale_video(mocker, tmp_path):

@@ -17,6 +17,18 @@ def test_cli_image_upscaling(tmp_path):
     assert output_path.exists()
 
 
+def test_cli_invalid_scale_factor(tmp_path):
+    """Test invalid scale factor handling"""
+    runner = CliRunner()
+    input_path = tmp_path / "input.jpg"
+    output_path = tmp_path / "output.jpg"
+    input_path.touch()
+    result = runner.invoke(
+        main, ["image", str(input_path), str(output_path), "--scale", "0"]
+    )
+    assert result.exit_code != 0
+    assert "Scale factor must be ≥1" in result.output
+
 def test_cli_video_upscaling(tmp_path):
     """Test video upscaling CLI command"""
     runner = CliRunner()

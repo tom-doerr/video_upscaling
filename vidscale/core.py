@@ -6,7 +6,18 @@ import cv2
 
 
 def upscale_image(input_path: Path, output_path: Path, scale_factor: int = 2) -> None:
-    """Upscale an image using bicubic interpolation"""
+    """Upscale an image using bicubic interpolation.
+    
+    Args:
+        input_path: Path to source image
+        output_path: Path to save upscaled image
+        scale_factor: Multiplier for image dimensions (must be ≥1)
+        
+    Raises:
+        ValueError: For invalid inputs or processing errors
+    """
+    if scale_factor < 1:
+        raise ValueError("Scale factor must be ≥1")
     img = cv2.imread(str(input_path))
     if img is None:
         raise ValueError(f"Could not read image from {input_path}")
@@ -20,7 +31,25 @@ def upscale_image(input_path: Path, output_path: Path, scale_factor: int = 2) ->
 
 
 def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) -> None:
-    """Upscale video by processing individual frames"""
+    """Upscale video by processing individual frames.
+    
+    Args:
+        input_path: Path to source video
+        output_path: Path to save upscaled video
+        scale_factor: Multiplier for video dimensions (must be ≥1)
+        
+    Raises:
+        RuntimeError: If FFmpeg is not available
+        ValueError: For invalid inputs
+    """
+    if scale_factor < 1:
+        raise ValueError("Scale factor must be ≥1")
+        
+    # Check FFmpeg availability
+    try:
+        subprocess.run(["ffmpeg", "-version"], check=True, capture_output=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        raise RuntimeError("FFmpeg is required for video processing") from None
     temp_dir = input_path.parent / "temp_frames"
     temp_dir.mkdir(exist_ok=True)
     # Extract frames
