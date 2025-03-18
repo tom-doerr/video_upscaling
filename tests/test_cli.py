@@ -43,6 +43,7 @@ def test_cli_video_upscaling(tmp_path):
     assert result.exit_code == 0
     assert output_path.exists()
 
+
 def test_cli_nonexistent_input(tmp_path):
     """Test handling of non-existent input file"""
     runner = CliRunner()
