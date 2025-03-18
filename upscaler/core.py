@@ -6,10 +6,10 @@ import cv2 as cv  # pylint: disable=import-error,no-member
 
 
 VALID_INTERPOLATIONS = {
-    cv.INTER_NEAREST: "nearest neighbor",
-    cv.INTER_LINEAR: "bilinear",
-    cv.INTER_CUBIC: "bicubic",
-    cv.INTER_LANCZOS4: "Lanczos",
+    cv.INTER_NEAREST: "nearest neighbor",  # pylint: disable=no-member
+    cv.INTER_LINEAR: "bilinear",  # pylint: disable=no-member
+    cv.INTER_CUBIC: "bicubic",  # pylint: disable=no-member
+    cv.INTER_LANCZOS4: "Lanczos",  # pylint: disable=no-member
 }
 
 
@@ -153,7 +153,7 @@ def upscale_video(  # pylint: disable=too-many-locals
     if interpolation not in VALID_INTERPOLATIONS:
         raise ValueError(
             f"Invalid interpolation method: {interpolation}. "
-            f"Valid methods: {', '.join(valid_interpolations.values())}"
+            f"Valid methods: {', '.join(VALID_INTERPOLATIONS.values())}"
         )
 
     # Set up output video codec and writer
