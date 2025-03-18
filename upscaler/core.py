@@ -116,16 +116,6 @@ def upscale_video(
         RuntimeError: If video processing fails at any stage
         FileNotFoundError: If input file doesn't exist
     """
-    """Upscale video frames using specified interpolation method with validation.
-
-    The upscaling process:
-    1. Validates input parameters and paths
-    2. Reads video metadata
-    3. Initializes output video writer
-    4. Processes frames in streaming fashion
-    5. Maintains original frame rate and aspect ratio
-
-    Processes video frame-by-frame, resizing each frame using the specified
     scaling factor and interpolation method. Maintains original frame rate
     and aspect ratio.
 
@@ -212,7 +202,6 @@ def upscale_video(
         ("mp4v", "MPEG-4 Part 2 (legacy)"),
         ("X264", "X264 encoder"),
     ]
-    
     fourcc = 0
     selected_codec = None
     for codec, description in codec_priority:
