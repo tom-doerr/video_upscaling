@@ -8,7 +8,7 @@ from .core import upscale_video
 
 def main() -> None:
     """Command line interface for video upscaling.
-    
+
     Raises:
         ValueError: If invalid arguments are provided
         RuntimeError: If video processing fails
@@ -34,9 +34,9 @@ def main() -> None:
     # Map interpolation names to OpenCV constants
     interpolation_map = {
         "nearest": cv2.INTER_NEAREST,  # Fastest but lowest quality
-        "linear": cv2.INTER_LINEAR,    # Balance of speed/quality
-        "cubic": cv2.INTER_CUBIC,     # Slower but higher quality (default)
-        "lanczos": cv2.INTER_LANCZOS4, # Highest quality but slowest
+        "linear": cv2.INTER_LINEAR,  # Balance of speed/quality
+        "cubic": cv2.INTER_CUBIC,  # Slower but higher quality (default)
+        "lanczos": cv2.INTER_LANCZOS4,  # Highest quality but slowest
     }
 
     upscale_video(

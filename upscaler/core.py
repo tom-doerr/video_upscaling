@@ -11,13 +11,13 @@ def upscale_video(  # pylint: disable=too-many-locals
     interpolation: int = cv2.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method.
-    
+
     Args:
         input_path: Path to input video file
         output_path: Path for output video file
         scale_factor: Multiplier for video dimensions (must be ≥1)
         interpolation: OpenCV interpolation method constant to use
-        
+
     Raises:
         ValueError: For invalid inputs or scaling parameters
         RuntimeError: If video processing fails at any stage

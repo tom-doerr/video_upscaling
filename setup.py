@@ -1,4 +1,5 @@
 """Package configuration for video upscaling tool."""
+
 from setuptools import setup, find_packages
 
 setup(
@@ -6,13 +7,13 @@ setup(
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
-        'numpy',
-        'opencv-python-headless',
+        "numpy",
+        "opencv-python-headless",
     ],
     entry_points={
-        'console_scripts': [
-            'upscale-video=upscaler.cli:main',
+        "console_scripts": [
+            "upscale-video=upscaler.cli:main",
         ],
     },
-    python_requires='>=3.8',
+    python_requires=">=3.8",
 )
