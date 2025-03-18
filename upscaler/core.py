@@ -79,7 +79,8 @@ def process_frames(
         RuntimeError: If frame processing fails at any stage
             or empty frame is received
     """
-    for frame_count in itertools.count(start=0):
+    frame_count = 0
+    while True:
         ret, frame = cap.read()
         if not ret:
             break
@@ -239,11 +240,8 @@ def upscale_video(
         )
 
     # Set up output video codec and writer with modern codec priority
-    fourcc, _ = (
-        _select_video_codec()
-    )  # _ indicates we're intentionally ignoring the codec description
-    output_width: int = width * scale_factor
-    output_height: int = height * scale_factor
+    fourcc = _select_video_codec()[0]  # Get first element of tuple (codec, description)
+    output_width, output_height = width * scale_factor, height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
         raise ValueError(
             f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
@@ -252,9 +250,7 @@ def upscale_video(
 
     try:
         # Process frames and write output
-        frame_count = 0
-        for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
-            frame_count += 1
+        for frame_count, (_, _, upscaled) in enumerate(process_frames(cap, scale_factor, interpolation), 1):
             if upscaled.shape[1] != output_width or upscaled.shape[0] != output_height:
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
