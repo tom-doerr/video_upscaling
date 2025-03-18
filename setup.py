@@ -24,11 +24,7 @@ setup(
     author="Video Upscaler Maintainers",
     author_email="maintainers@vidupscale.example",
     description="High-quality video upscaling with multiple interpolation algorithms",
-    long_description=(
-        Path("README.md").read_text(encoding="utf-8")
-        if Path("README.md").exists()
-        else "Video upscaling package with multiple interpolation algorithms"
-    ),
+    long_description=Path("README.md").read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",
     url="https://github.com/yourusername/video-upscaler",
     classifiers=[

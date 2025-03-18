@@ -157,6 +157,7 @@ def _select_video_codec() -> tuple[int, str]:
         ("avc1", "H.264/MPEG-4 AVC"),  # Modern compatibility
         ("mp4v", "MPEG-4 Part 2"),  # Legacy format
         ("X264", "X264 encoder"),  # Alternative encoder
+        ("MJPG", "Motion-JPEG"),    # Common fallback
     ]
     for codec, description in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
@@ -215,11 +216,12 @@ def upscale_video(
             raise ValueError(f"Scale factor must be >=1 (got {scale_factor})")
 
     _validate_inputs()
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    if not output_path.parent.exists():
-        raise FileNotFoundError(
-            f"Output directory creation failed: {output_path.parent}"
-        )
+    try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        if not output_path.parent.is_dir():
+            raise RuntimeError(f"Failed to create output directory: {output_path.parent}")
+        if not os.access(output_path.parent, os.W_OK):
+            raise PermissionError(f"Write access denied to: {output_path.parent}")
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
@@ -267,7 +269,9 @@ def upscale_video(
             out.write(upscaled)
 
     except cv.error as e:  # pylint: disable=no-member
-        raise RuntimeError(f"OpenCV processing error: {e}") from e
+        raise RuntimeError(f"OpenCV processing failed: {e}") from e
     finally:
+        # Ensure proper resource cleanup even if errors occur
         cap.release()
-        out.release()
+        if 'out' in locals() and out.isOpened():
+            out.release()
