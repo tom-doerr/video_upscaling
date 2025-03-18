@@ -4,7 +4,7 @@ from pathlib import Path
 import cv2 as cv  # pylint: disable=import-error
 
 
-def upscale_video(  # pylint: disable=too-many-locals
+def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
     input_path: Path,
     output_path: Path,
     scale_factor: int,
@@ -32,7 +32,6 @@ def upscale_video(  # pylint: disable=too-many-locals
         raise FileNotFoundError(f"Input file not found: {input_path}")
     if output_path.is_dir():
         raise ValueError(f"Output path is a directory: {output_path}")
-        
     # Ensure output directory exists
     output_path.parent.mkdir(parents=True, exist_ok=True)
     # Open input video with validation
