@@ -38,7 +38,7 @@ def process_frames(
     interpolation: int,
 ) -> Generator[Tuple[int, int, np.ndarray], None, None]:
     """Process video frames with enhanced validation and error handling.
-    
+
     Args:
         cap: OpenCV video capture object (must be already opened)
         scale_factor: Scaling multiplier (>=1)
@@ -153,10 +153,10 @@ def _create_video_writer(
 
 def _select_video_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation.
-    
+
     Returns:
         Tuple containing fourcc code and list of tried codecs
-    
+
     Raises:
         RuntimeError: If no valid codec could be initialized
     """
