@@ -157,7 +157,6 @@ def _select_video_codec() -> tuple[int, list[str]]:  # type: ignore
     Returns:
         Tuple containing fourcc code and list of tried codecs
     """
-    """Select appropriate video codec with validation."""
     codec_priority = [
         "avc1",  # H.264/MPEG-4 AVC
         "mp4v",  # MPEG-4 Part 2
