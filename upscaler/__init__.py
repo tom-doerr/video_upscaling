@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Video upscaling package providing spatial resolution enhancement.
 
 Features:
@@ -10,5 +8,7 @@ Features:
 
 Provides both CLI and programmatic interfaces.
 """
+
+from __future__ import annotations
 
 __version__ = "0.1.1"
