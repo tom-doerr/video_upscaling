@@ -192,7 +192,7 @@ def upscale_video(
 
     Maintains original frame rate and aspect ratio using streaming processing.
     """
-    
+
     # Validate and prepare paths first
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if not output_path.parent.is_dir():
