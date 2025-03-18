@@ -20,9 +20,9 @@ def image(input_path, output_path, scale):
     output_path = Path(output_path)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    if output_path.exists():
-        raise FileExistsError(f"Output path {output_path} already exists")
     try:
+        if output_path.exists():
+            raise FileExistsError(f"Output path {output_path} already exists")
         upscale_image(input_path, output_path, scale)
         click.echo(f"Successfully upscaled image by {scale}x")
     except Exception as e:

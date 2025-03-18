@@ -83,4 +83,4 @@ def test_upscale_video(mocker, tmp_path):
     upscale_video(input_path, output_path, scale_factor=2)
 
     # Verify FFmpeg was called
-    assert mock_run.call_count == 3
+    assert mock_run.call_count == 4  # Includes ffmpeg check + 3 processing steps

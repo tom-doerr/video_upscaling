@@ -33,6 +33,13 @@ def upscale_image(
     cv2.imwrite(str(output_path), upscaled)  # pylint: disable=no-member
 
 
+def _validate_ffmpeg() -> None:
+    """Check if FFmpeg is available and executable."""
+    try:
+        subprocess.run(["ffmpeg", "-version"], check=True, capture_output=True)
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        raise RuntimeError("FFmpeg is required for video processing") from e
+
 def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) -> None:
     """Upscale video by processing individual frames.
 
@@ -45,14 +52,10 @@ def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) ->
         RuntimeError: If FFmpeg is not available
         ValueError: For invalid inputs
     """
+    _validate_ffmpeg()
     if scale_factor < 1:
         raise ValueError("Scale factor must be ≥1")
 
-    # Check FFmpeg availability
-    try:
-        subprocess.run(["ffmpeg", "-version"], check=True, capture_output=True)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        raise RuntimeError("FFmpeg is required for video processing") from None
     if not input_path.exists():
         raise ValueError(f"Input file {input_path} does not exist")
 
