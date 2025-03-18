@@ -84,8 +84,7 @@ def main() -> None:
         )
     except (ValueError, RuntimeError, FileNotFoundError, OSError) as e:
         error_msg = f"Error ({type(e).__name__}): {e}"
-        file = sys.stderr
-        print(error_msg, file=file)
+        print(error_msg, file=sys.stderr)
         sys.exit(1)
 
 
