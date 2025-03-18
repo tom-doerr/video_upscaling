@@ -11,7 +11,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
     interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method.
-    
+
     Processes video frame-by-frame, resizing each frame using the specified
     scaling factor and interpolation method. Maintains original frame rate
     and aspect ratio.
@@ -27,6 +27,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         RuntimeError: If video processing fails at any stage
         FileNotFoundError: If input file doesn't exist
     """
+
     def _validate_inputs() -> None:
         """Validate all input parameters and paths."""
         if not input_path.is_file():
