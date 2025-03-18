@@ -92,7 +92,7 @@ def upscale_video(  # pylint: disable=too-many-locals
     Args:
         input_path: Path to existing input video file
         output_path: Path for new output video file (will be overwritten)
-        scale_factor: Multiplier for video dimensions (must be ≥1)
+        scale_factor: Multiplier for video dimensions (must be >=1)
         interpolation: OpenCV interpolation method constant to use
 
     Raises:

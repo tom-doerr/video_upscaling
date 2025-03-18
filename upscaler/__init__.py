@@ -9,4 +9,4 @@ Features:
 Provides both CLI and programmatic interfaces.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
