@@ -1,7 +1,7 @@
 """Command line interface for video upscaling package."""
 import argparse
-import cv2
 from pathlib import Path
+import cv2
 from .core import upscale_video
 
 def main():

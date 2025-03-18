@@ -39,7 +39,6 @@ def upscale_video(
             ret, frame = cap.read()
             if not ret:
                 break
-            
             # Upscale frame
             upscaled = cv2.resize(
                 frame,
