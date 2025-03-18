@@ -154,10 +154,9 @@ def _create_video_writer(
 def _select_video_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation."""
     codec_priority = [
-        "avc1",  # H.264/MPEG-4 AVC (modern compatibility)
-        "mp4v",  # MPEG-4 Part 2 (legacy format)
+        "avc1",  # H.264/MPEG-4 AVC
+        "mp4v",  # MPEG-4 Part 2 
         "X264",  # Alternative encoder
-        "MJPG",  # Motion-JPEG (common fallback)
     ]
     for codec in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
@@ -189,9 +188,8 @@ def upscale_video(
         ValueError: For invalid paths or scaling parameters
         RuntimeError: If video processing fails at any stage
         FileNotFoundError: If input file doesn't exist
-
     Maintains original frame rate and aspect ratio using streaming processing.
-    """
+    """  # noqa: D205
 
     # Validate and prepare paths first
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -250,10 +248,10 @@ def upscale_video(
         )
     out = _create_video_writer(
         output_path,
-        _select_video_codec()[0],  # Get codec from selector
+        fourcc,
         fps,
         (output_width, output_height),
-        _select_video_codec()[1],  # Get codec priority list for error reporting
+        codec_priority,
     )
 
     try:

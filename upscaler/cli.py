@@ -60,9 +60,6 @@ def main() -> None:
     Raises:
         SystemExit: Always exits with status code
     """
-    parser.add_argument(
-        "--version", action="version", version=f"%(prog)s {__version__}"
-    )
 
     try:
         args = parse_args()
