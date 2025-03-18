@@ -157,13 +157,11 @@ def _select_video_codec() -> tuple[int, str]:
         ("mp4v", "MPEG-4 Part 2 (legacy)"),
         ("X264", "X264 encoder"),
     ]
-    
     for codec, description in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
             validate_codec(fourcc)
             return fourcc, description
-    
     validate_codec(0)  # Will throw error
     raise RuntimeError("Code path should never be reached")  # For type checker
 
@@ -239,7 +237,7 @@ def upscale_video(
         )
 
     # Set up output video codec and writer with modern codec priority
-    fourcc, selected_codec = _select_video_codec()
+    fourcc, _ = _select_video_codec()  # _ indicates we're intentionally ignoring the codec description
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
