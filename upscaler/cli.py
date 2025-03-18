@@ -25,6 +25,7 @@ def parse_args() -> argparse.Namespace:
         prog="upscale-video",
         description="Upscale video dimensions using spatial interpolation methods",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        epilog="Note: Output video format is determined by the file extension (supports .mp4, .avi, .mov)",
     )
     parser.add_argument("input", type=Path, help="Input video path")
     parser.add_argument("output", type=Path, help="Output video path")
