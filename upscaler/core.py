@@ -107,17 +107,9 @@ def upscale_video(
     interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method with validation.
-
+    
     Example:
         >>> upscale_video(Path("input.mp4"), Path("output.mp4"), 2, cv.INTER_CUBIC)
-    
-    Raises:
-        ValueError: For invalid paths or scaling parameters
-        RuntimeError: If video processing fails at any stage
-        FileNotFoundError: If input file doesn't exist
-    """
-    scaling factor and interpolation method. Maintains original frame rate
-    and aspect ratio.
 
     Args:
         input_path: Path to existing input video file
@@ -129,6 +121,8 @@ def upscale_video(
         ValueError: For invalid paths or scaling parameters
         RuntimeError: If video processing fails at any stage
         FileNotFoundError: If input file doesn't exist
+
+    Maintains original frame rate and aspect ratio using streaming processing.
     """
 
     def _validate_inputs() -> None:
