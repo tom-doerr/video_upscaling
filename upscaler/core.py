@@ -57,9 +57,6 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         raise ValueError(
             f"Invalid video dimensions {width}x{height} - must be positive"
         )
-    # Validate scaling parameters
-    if scale_factor < 1:
-        raise ValueError(f"Scale factor must be ≥1 (got {scale_factor})")
 
     # Set up output video codec and writer
     fourcc: int = cv.VideoWriter_fourcc(*"mp4v")

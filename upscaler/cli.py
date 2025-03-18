@@ -13,9 +13,6 @@ from .core import upscale_video
 def main() -> None:
     """Command line interface for video upscaling.
 
-    Args:
-        args: Command line arguments parsed by argparse
-
     Raises:
         ValueError: For invalid inputs or scaling parameters
         RuntimeError: If video processing fails at any stage
