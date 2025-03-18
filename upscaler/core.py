@@ -6,12 +6,13 @@ from typing import Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error
 
 # pylint: disable=no-member,no-name-in-module
-VALID_INTERPOLATIONS = {
+VALID_INTERPOLATIONS: dict[int, str] = {
     cv.INTER_NEAREST: "nearest neighbor",
-    cv.INTER_LINEAR: "bilinear",
+    cv.INTER_LINEAR: "bilinear", 
     cv.INTER_CUBIC: "bicubic",
     cv.INTER_LANCZOS4: "Lanczos",
 }
+"""Dictionary mapping OpenCV interpolation constants to human-readable names"""
 
 
 def validate_codec(fourcc: int) -> None:
@@ -35,6 +36,19 @@ def process_frames(
     scale_factor: float,
     interpolation: int,
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
+    """Process video frames with enhanced validation and error handling.
+    
+    Args:
+        cap: OpenCV video capture object (must be already opened)
+        scale_factor: Scaling multiplier (>=1)
+        interpolation: OpenCV interpolation method constant
+
+    Yields:
+        Tuple containing original width, height and upscaled frame
+
+    Raises:
+        RuntimeError: If frame processing fails or empty frame received
+    """
     """Process video frames with enhanced validation and error handling.
 
     Args:
@@ -131,14 +145,22 @@ def _create_video_writer(
 
 def _select_video_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation.
+    
+    Returns:
+        Tuple containing fourcc code and list of tried codecs
+        
+    Raises:
+        RuntimeError: If no valid codec could be initialized
+    """
+    """Select appropriate video codec with validation.
 
     Returns:
         Tuple containing fourcc code and list of tried codecs
     """
     codec_priority = [
+        "h264",  # Broadly compatible H.264
         "avc1",  # H.264/MPEG-4 AVC
         "mp4v",  # MPEG-4 Part 2
-        "X264",  # Alternative encoder
     ]
     for codec in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member

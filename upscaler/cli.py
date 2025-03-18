@@ -85,12 +85,10 @@ def main() -> None:
 
         # Map interpolation names to OpenCV constants with quality notes
         interpolation_map = {
-            # pylint: disable=no-member
-            # Disabling no-member because OpenCV constants are dynamically resolved
-            "nearest": cv.INTER_NEAREST,  # Fastest, lowest quality
-            "linear": cv.INTER_LINEAR,  # Balanced quality/speed
-            "cubic": cv.INTER_CUBIC,  # Higher quality, slower
-            "lanczos": cv.INTER_LANCZOS4,  # Highest quality, very slow
+            "nearest": cv.INTER_NEAREST,  # Fastest, lowest quality (good for pixel art)
+            "linear": cv.INTER_LINEAR,    # Balanced quality/speed (recommended for most cases)
+            "cubic": cv.INTER_CUBIC,      # Higher quality, slower (better for photos)
+            "lanczos": cv.INTER_LANCZOS4, # Highest quality, very slow (8x8 kernel)
         }
 
         try:
