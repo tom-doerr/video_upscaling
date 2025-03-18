@@ -1,7 +1,8 @@
 """Core video upscaling functionality using OpenCV."""
 
 from pathlib import Path
-import cv2 as cv  # pylint: disable=import-error
+from typing import Generator, Tuple
+import cv2 as cv  # pylint: disable=import-error,no-member
 
 
 def validate_codec(fourcc: int) -> None:
@@ -22,7 +23,7 @@ def validate_codec(fourcc: int) -> None:
 
 def process_frames(
     cap: cv.VideoCapture, scale_factor: int, interpolation: int
-) -> tuple[int, int, int]:
+) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
     """Process video frames and yield upscaled versions.
 
     Args:

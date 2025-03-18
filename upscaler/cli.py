@@ -6,7 +6,7 @@ Example usage:
 
 import argparse
 from pathlib import Path
-import cv2 as cv  # pylint: disable=import-error
+import cv2 as cv  # pylint: disable=import-error,no-member
 from .core import upscale_video
 
 
