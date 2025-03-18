@@ -151,6 +151,14 @@ def _create_video_writer(
 
 def _select_video_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation.
+    
+    Returns:
+        Tuple containing fourcc code and list of tried codecs
+        
+    Raises:
+        RuntimeError: If no valid codec could be initialized
+    """
+    """Select appropriate video codec with validation.
 
     Returns:
         Tuple containing fourcc code and list of tried codecs
@@ -173,7 +181,7 @@ def _select_video_codec() -> tuple[int, list[str]]:
     raise RuntimeError("Code path should never be reached")  # For type checker
 
 
-def upscale_video(
+def upscale_video(  # pylint: disable=too-many-branches
     input_path: Path,
     output_path: Path,
     scale_factor: float,
