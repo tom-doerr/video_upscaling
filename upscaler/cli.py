@@ -18,10 +18,11 @@ def parse_args() -> argparse.Namespace:
     """Parse and validate command line arguments.
 
     Returns:
-        argparse.Namespace: Parsed arguments
+        argparse.Namespace: Parsed arguments with validated types
 
     Raises:
         SystemExit: For help request or argument parsing failure
+            (inherited from argparse)
     """
     parser = argparse.ArgumentParser(
         prog="upscale-video",
@@ -116,7 +117,7 @@ def main() -> None:
         sys.exit(2)
     except Exception as e:  # pylint: disable=broad-except
         print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
-        if args.debug if "args" in locals() else False:  # Safer debug check
+        if getattr(args, 'debug', False):  # Handle debug flag safely
             traceback.print_exc()
         sys.exit(3)
 

@@ -54,6 +54,23 @@ def process_frames(
         RuntimeError: If frame processing fails at any stage
             or empty frame is received
     """
+    """Process video frames with enhanced validation and error handling.
+
+    Args:
+        cap: OpenCV video capture object (must be already opened)
+        scale_factor: Scaling multiplier (>=1)
+        interpolation: OpenCV interpolation method constant
+
+    Yields:
+        Tuple containing:
+        - original_width: Source frame width in pixels
+        - original_height: Source frame height in pixels
+        - upscaled_frame: Processed frame as numpy array
+
+    Raises:
+        RuntimeError: If frame processing fails at any stage
+            or empty frame is received
+    """
     frame_count = 0
     while True:
         ret, frame = cap.read()
@@ -159,6 +176,14 @@ def _select_video_codec() -> tuple[int, list[str]]:
     Raises:
         RuntimeError: If no valid codec could be initialized
     """
+    """Select appropriate video codec with validation.
+
+    Returns:
+        Tuple containing fourcc code and list of tried codecs
+
+    Raises:
+        RuntimeError: If no valid codec could be initialized
+    """
     codec_priority = [
         "mp4v",  # MPEG-4 Part 2 (required for .mp4)
         "avc1",  # H.264/AVC
@@ -175,6 +200,10 @@ def _select_video_codec() -> tuple[int, list[str]]:
 
 
 def upscale_video(  # pylint: disable=too-many-branches
+    """Upscale video frames using specified interpolation method with validation.
+    
+    Maintains original frame rate and aspect ratio using streaming processing.
+    """
     input_path: Path,
     output_path: Path,
     scale_factor: float,
