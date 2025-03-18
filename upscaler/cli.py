@@ -92,13 +92,13 @@ def main() -> None:
             scale_factor=args.scale,
             interpolation=interpolation_method,
         )
+    except PermissionError as e:
+        print(f"Permission denied: {e}", file=sys.stderr)
+        sys.exit(3)
     except (ValueError, RuntimeError, FileNotFoundError, OSError) as e:
         error_msg = f"Error processing {args.input}: {e.__class__.__name__} - {e}"
         print(error_msg, file=sys.stderr)
         sys.exit(1)
-    except PermissionError as e:
-        print(f"Permission denied: {e}", file=sys.stderr)
-        sys.exit(3)
     except Exception as e:  # pylint: disable=broad-except
         print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
         sys.exit(3)

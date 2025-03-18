@@ -1,5 +1,6 @@
 """Core video upscaling functionality using OpenCV."""
 
+import os
 from pathlib import Path
 from typing import Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error,no-member
@@ -73,7 +74,7 @@ def process_frames(
         raise RuntimeError("No frames processed - input video may be corrupted")
 
 
-def upscale_video(  # pylint: disable=too-many-locals
+def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
     input_path: Path,
     output_path: Path,
     scale_factor: int,
