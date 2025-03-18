@@ -26,7 +26,21 @@ def process_frames(
     scale_factor: int,
     interpolation: int,  # pylint: disable=no-member
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
-    """Process video frames and yield upscaled versions.
+    """Process video frames and yield upscaled versions in real-time.
+
+    Args:
+        cap: OpenCV video capture object (must be already opened)
+        scale_factor: Integer scaling multiplier (≥1)
+        interpolation: OpenCV interpolation method constant
+
+    Yields:
+        Tuple containing:
+        - Original frame width
+        - Original frame height 
+        - Upscaled frame as numpy array
+
+    Raises:
+        RuntimeError: If frame processing fails at any stage
 
     Args:
         cap: OpenCV video capture object
@@ -64,7 +78,14 @@ def upscale_video(  # pylint: disable=too-many-locals
     scale_factor: int,
     interpolation: int = cv.INTER_CUBIC,  # pylint: disable=no-member
 ) -> None:
-    """Upscale video frames using specified interpolation method.
+    """Upscale video frames using specified interpolation method with validation.
+
+    The upscaling process:
+    1. Validates input parameters and paths
+    2. Reads video metadata
+    3. Initializes output video writer
+    4. Processes frames in streaming fashion
+    5. Maintains original frame rate and aspect ratio
 
     Processes video frame-by-frame, resizing each frame using the specified
     scaling factor and interpolation method. Maintains original frame rate
@@ -129,13 +150,17 @@ def upscale_video(  # pylint: disable=too-many-locals
         )
 
     # Validate interpolation method
-    if interpolation not in {
-        cv.INTER_NEAREST,  # pylint: disable=no-member
-        cv.INTER_LINEAR,  # pylint: disable=no-member
-        cv.INTER_CUBIC,  # pylint: disable=no-member
-        cv.INTER_LANCZOS4,  # pylint: disable=no-member
-    }:
-        raise ValueError(f"Invalid interpolation method: {interpolation}")
+    valid_interpolations = {
+        cv.INTER_NEAREST: "nearest neighbor",
+        cv.INTER_LINEAR: "bilinear",
+        cv.INTER_CUBIC: "bicubic",
+        cv.INTER_LANCZOS4: "Lanczos",
+    }
+    if interpolation not in valid_interpolations:
+        raise ValueError(
+            f"Invalid interpolation method: {interpolation}. "
+            f"Valid methods: {', '.join(f'{k} ({v})' for k, v in valid_interpolations.items())}"
+        )
 
     # Set up output video codec and writer
     fourcc = cv.VideoWriter_fourcc(*"mp4v")  # pylint: disable=no-member

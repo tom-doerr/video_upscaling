@@ -21,9 +21,9 @@ setup(
         ],
     },
     python_requires=">=3.8",
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="Video upscaling tool using spatial interpolation methods",
+    author="Video Upscaler Maintainers",
+    author_email="maintainers@vidupscale.example",
+    description="High-quality video upscaling with multiple interpolation algorithms",
     long_description=(
         Path("README.md").read_text(encoding="utf-8")
         if Path("README.md").exists()
