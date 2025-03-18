@@ -53,23 +53,6 @@ def process_frames(
         RuntimeError: If frame processing fails at any stage
             or empty frame is received
     """
-    """Process video frames with enhanced validation and error handling.
-
-    Args:
-        cap: OpenCV video capture object (must be already opened)
-        scale_factor: Scaling multiplier (>=1)
-        interpolation: OpenCV interpolation method constant
-
-    Yields:
-        Tuple containing:
-        - original_width: Source frame width in pixels
-        - original_height: Source frame height in pixels
-        - upscaled_frame: Processed frame as numpy array
-
-    Raises:
-        RuntimeError: If frame processing fails at any stage
-            or empty frame is received
-    """
     frame_count = 0
     while True:
         ret, frame = cap.read()
@@ -157,7 +140,6 @@ def _create_video_writer(
         raise ValueError(
             f"Invalid frame dimensions {frame_size} - must be positive integers"
         )
-    """Create and validate video writer object."""
     out = cv.VideoWriter(str(output_path), fourcc, fps, frame_size)
     if not out.isOpened():
         raise RuntimeError(
@@ -173,14 +155,6 @@ def _select_video_codec() -> tuple[int, list[str]]:
     Returns:
         Tuple containing fourcc code and list of tried codecs
         
-    Raises:
-        RuntimeError: If no valid codec could be initialized
-    """
-    """Select appropriate video codec with validation.
-
-    Returns:
-        Tuple containing fourcc code and list of tried codecs
-
     Raises:
         RuntimeError: If no valid codec could be initialized
     """
