@@ -132,7 +132,9 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements,too-ma
     _validate_inputs()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if not output_path.parent.exists():
-        raise FileNotFoundError(f"Output directory creation failed: {output_path.parent}")
+        raise FileNotFoundError(
+            f"Output directory creation failed: {output_path.parent}"
+        )
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
