@@ -76,13 +76,13 @@ def process_frames(
 
 def _get_video_properties(cap: cv.VideoCapture) -> tuple[float, int, int]:
     """Extract and validate video properties from capture object.
-    
+
     Args:
         cap: OpenCV video capture object
-    
+
     Returns:
         Tuple containing (fps: float, width: int, height: int)
-    
+
     Raises:
         RuntimeError: If any property cannot be retrieved
         ValueError: For invalid property values
@@ -200,7 +200,8 @@ def upscale_video(
         if scale_factor < 1:
             raise ValueError(
                 f"Scale factor must be >=1 (got {scale_factor}). "
-                "Use --scale 2 to double video dimensions")
+                "Use --scale 2 to double video dimensions"
+            )
 
     _validate_inputs()
     # Open input video with validation

@@ -39,7 +39,7 @@ def parse_args() -> argparse.Namespace:
         "--scale",
         type=int,
         required=True,
-        help="Scaling factor (integer multiplier, e.g. 2 doubles each dimension)"
+        help="Scaling factor (integer multiplier, e.g. 2 doubles each dimension)",
     )
     parser.add_argument(
         "--interpolation",
