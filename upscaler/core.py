@@ -17,20 +17,28 @@ VALID_INTERPOLATIONS = {
 
 def generate_test_pattern(width: int, height: int) -> cv.typing.MatLike:
     """Generate a test pattern video frame for verification.
-    
+
     Args:
         width: Pattern width in pixels
         height: Pattern height in pixels
-        
+
     Returns:
         Generated frame with test pattern
     """
     frame = np.zeros((height, width, 3), dtype=np.uint8)
     cv.line(frame, (0, 0), (width, height), (0, 255, 0), 2)
     cv.line(frame, (width, 0), (0, height), (0, 255, 0), 2)
-    cv.putText(frame, f"{width}x{height}", (10, height-10),
-              cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    cv.putText(
+        frame,
+        f"{width}x{height}",
+        (10, height - 10),
+        cv.FONT_HERSHEY_SIMPLEX,
+        1,
+        (255, 255, 255),
+        2,
+    )
     return frame
+
 
 def validate_codec(fourcc: int) -> None:
     """Validate video codec is supported.
@@ -224,8 +232,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements,too-ma
         frame_count = 0
         for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
             frame_count += 1
-            if (upscaled.shape[1] != output_width
-                or upscaled.shape[0] != output_height):
+            if upscaled.shape[1] != output_width or upscaled.shape[0] != output_height:
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
                     f"Expected {output_width}x{output_height}, "
