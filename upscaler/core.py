@@ -34,7 +34,6 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
     fps: float = cap.get(cv2.CAP_PROP_FPS)
     width: int = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height: int = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    
     if fps <= 0:
         raise ValueError(f"Invalid frame rate {fps} - must be positive")
     if width <= 0 or height <= 0:
@@ -51,7 +50,6 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         raise RuntimeError("Failed to initialize MP4V codec - check codec support")
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
-    
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
         raise ValueError(
             f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
