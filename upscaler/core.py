@@ -47,7 +47,6 @@ def process_frames(
     Raises:
         RuntimeError: If frame processing fails at any stage
     """
-    """
     frame_count = 0
     while cap.isOpened():
         ret, frame = cap.read()
