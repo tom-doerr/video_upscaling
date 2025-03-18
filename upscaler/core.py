@@ -41,14 +41,6 @@ def process_frames(
 
     Raises:
         RuntimeError: If frame processing fails at any stage
-
-    Args:
-        cap: OpenCV video capture object
-        scale_factor: Scaling multiplier
-        interpolation: OpenCV interpolation method
-
-    Yields:
-        Tuple of (original width, original height, upscaled frame)
     """
     frame_count = 0
     while cap.isOpened():
