@@ -163,7 +163,12 @@ def upscale_video(  # pylint: disable=too-many-locals
         )
 
     # Set up output video codec and writer
-    fourcc = cv.VideoWriter_fourcc(*"mp4v")  # pylint: disable=no-member
+    # Try more modern codecs first before falling back to MP4V
+    for codec in ["avc1", "mp4v", "X264"]:
+        fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
+        if fourcc != 0:
+            break
+    validate_codec(fourcc)
     validate_codec(fourcc)
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor

@@ -45,33 +45,37 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     """Command line interface entry point for video upscaling."""
-    args = parse_args()
-    # Validate scale factor early
-    if args.scale < 1:
-        raise ValueError(f"Invalid scale factor {args.scale} - must be ≥1")
-
-    # Map and validate interpolation method
-    interpolation_map = {
-        "nearest": cv.INTER_NEAREST,  # pylint: disable=no-member  # Fastest but lowest quality
-        "linear": cv.INTER_LINEAR,  # pylint: disable=no-member  # Balance of speed/quality
-        "cubic": cv.INTER_CUBIC,  # pylint: disable=no-member  # Slower but higher quality (default)
-        "lanczos": cv.INTER_LANCZOS4,  # pylint: disable=no-member  # Highest quality but slowest
-    }
-
     try:
-        interpolation_method = interpolation_map[args.interpolation]
-    except KeyError as e:
-        raise ValueError(
-            f"Invalid interpolation method '{args.interpolation}'. "
-            f"Valid choices are: {list(interpolation_map.keys())}"
-        ) from e
+        args = parse_args()
+        # Validate scale factor early
+        if args.scale < 1:
+            raise ValueError(f"Invalid scale factor {args.scale} - must be ≥1")
 
-    upscale_video(
-        input_path=args.input,
-        output_path=args.output,
-        scale_factor=args.scale,
-        interpolation=interpolation_method,
-    )
+        # Map and validate interpolation method
+        interpolation_map = {
+            "nearest": cv.INTER_NEAREST,  # pylint: disable=no-member  # Fastest but lowest quality
+            "linear": cv.INTER_LINEAR,  # pylint: disable=no-member  # Balance of speed/quality
+            "cubic": cv.INTER_CUBIC,  # pylint: disable=no-member  # Slower but higher quality (default)
+            "lanczos": cv.INTER_LANCZOS4,  # pylint: disable=no-member  # Highest quality but slowest
+        }
+
+        try:
+            interpolation_method = interpolation_map[args.interpolation]
+        except KeyError as e:
+            raise ValueError(
+                f"Invalid interpolation method '{args.interpolation}'. "
+                f"Valid choices are: {list(interpolation_map.keys())}"
+            ) from e
+
+        upscale_video(
+            input_path=args.input,
+            output_path=args.output,
+            scale_factor=args.scale,
+            interpolation=interpolation_method,
+        )
+    except (ValueError, RuntimeError, FileNotFoundError) as e:
+        print(f"Error: {e}")
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":
