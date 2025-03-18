@@ -117,6 +117,9 @@ def main() -> None:
     except (ValueError, FileNotFoundError) as e:
         print(f"Input error: {e}", file=sys.stderr)
         sys.exit(1)
+    except PermissionError as e:
+        print(f"Permission error: {e}", file=sys.stderr)
+        sys.exit(3)
     except (RuntimeError, OSError) as e:
         print(f"Processing error: {e}", file=sys.stderr)
         sys.exit(2)
@@ -124,7 +127,7 @@ def main() -> None:
         print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
         if getattr(args, "debug", False):  # Handle debug flag safely
             traceback.print_exc()
-        sys.exit(3)
+        sys.exit(4)
 
 
 if __name__ == "__main__":
