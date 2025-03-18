@@ -1,5 +1,7 @@
 """Tests for command line interface"""
 
+import numpy as np
+import cv2
 from click.testing import CliRunner
 from vidscale.cli import main
 
