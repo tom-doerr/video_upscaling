@@ -29,6 +29,7 @@ def test_cli_invalid_scale_factor(tmp_path):
     assert result.exit_code != 0
     assert "Scale factor must be ≥1" in result.output
 
+
 def test_cli_video_upscaling(tmp_path):
     """Test video upscaling CLI command"""
     runner = CliRunner()

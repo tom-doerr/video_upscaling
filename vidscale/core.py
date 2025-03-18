@@ -7,12 +7,12 @@ import cv2
 
 def upscale_image(input_path: Path, output_path: Path, scale_factor: int = 2) -> None:
     """Upscale an image using bicubic interpolation.
-    
+
     Args:
         input_path: Path to source image
         output_path: Path to save upscaled image
         scale_factor: Multiplier for image dimensions (must be ≥1)
-        
+
     Raises:
         ValueError: For invalid inputs or processing errors
     """
@@ -32,12 +32,12 @@ def upscale_image(input_path: Path, output_path: Path, scale_factor: int = 2) ->
 
 def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) -> None:
     """Upscale video by processing individual frames.
-    
+
     Args:
         input_path: Path to source video
         output_path: Path to save upscaled video
         scale_factor: Multiplier for video dimensions (must be ≥1)
-        
+
     Raises:
         RuntimeError: If FFmpeg is not available
         ValueError: For invalid inputs
