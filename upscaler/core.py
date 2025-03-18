@@ -140,6 +140,7 @@ def _create_video_writer(
     fps: float,
     output_width: int,
     output_height: int,
+    codec_priority: list[str],
 ) -> cv.VideoWriter:
     """Create and validate video writer object."""
     out = cv.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))
@@ -151,7 +152,7 @@ def _create_video_writer(
     return out
 
 
-def _select_video_codec() -> int:
+def _select_video_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation."""
     codec_priority = [
         "avc1",  # H.264/MPEG-4 AVC (modern compatibility)
@@ -163,7 +164,7 @@ def _select_video_codec() -> int:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
             validate_codec(fourcc)
-            return fourcc
+            return fourcc, codec_priority
     validate_codec(0)  # Will throw error
     raise RuntimeError("Code path should never be reached")  # For type checker
 
@@ -251,6 +252,7 @@ def upscale_video(
         fps,
         output_width,
         output_height,
+        _select_video_codec()[1],  # Get codec priority list for error reporting
     )
 
     try:
