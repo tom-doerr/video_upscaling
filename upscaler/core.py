@@ -30,7 +30,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
 
     def _validate_inputs() -> None:
         """Validate all input parameters and paths.
-        
+
         Raises:
             FileNotFoundError: If input file is missing
             ValueError: For invalid paths or scaling parameters
