@@ -65,7 +65,7 @@ def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) ->
             ["ffmpeg", "-i", str(input_path), str(temp_dir / "frame_%04d.png")],
             check=True,
             capture_output=True,
-            text=True
+            text=True,
         )
     except subprocess.CalledProcessError as e:
         raise ValueError(f"Failed to extract frames: {e.stderr}") from e
