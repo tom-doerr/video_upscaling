@@ -163,7 +163,7 @@ def _select_video_codec() -> tuple[int, list[str]]:
     """
     codec_priority = [
         "mp4v",  # MPEG-4 Part 2 (required for .mp4)
-        "avc1",  # H.264/AVC
+        "h264",  # H.264/AVC (better compatibility than avc1)
         "xvid",  # XVID (better for .avi)
         "mjpg",  # Motion-JPEG (for .mov)
     ]
@@ -183,8 +183,6 @@ def upscale_video(  # pylint: disable=too-many-branches
     interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method with validation.
-
-    Maintains original frame rate and aspect ratio using streaming processing.
 
     Examples:
         ```python
