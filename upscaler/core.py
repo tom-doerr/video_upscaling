@@ -100,12 +100,22 @@ def process_frames(
         raise RuntimeError("No frames processed - input video may be corrupted")
 
 
-def upscale_video(  # pylint: disable=too-many-locals,too-many-statements,too-many-branches
+def upscale_video(
     input_path: Path,
     output_path: Path,
     scale_factor: int,
     interpolation: int = cv.INTER_CUBIC,
 ) -> None:
+    """Upscale video frames using specified interpolation method with validation.
+
+    Example:
+        >>> upscale_video(Path("input.mp4"), Path("output.mp4"), 2, cv.INTER_CUBIC)
+    
+    Raises:
+        ValueError: For invalid paths or scaling parameters
+        RuntimeError: If video processing fails at any stage
+        FileNotFoundError: If input file doesn't exist
+    """
     """Upscale video frames using specified interpolation method with validation.
 
     The upscaling process:
@@ -196,21 +206,23 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements,too-ma
             f"Valid methods: {', '.join(VALID_INTERPOLATIONS.values())}"
         )
 
-    # Set up output video codec and writer with prioritized codec list
+    # Set up output video codec and writer with modern codec priority
+    codec_priority = [
+        ("avc1", "H.264/MPEG-4 AVC (modern compatibility)"),
+        ("mp4v", "MPEG-4 Part 2 (legacy)"),
+        ("X264", "X264 encoder"),
+    ]
+    
     fourcc = 0
-    supported_codecs: Dict[str, str] = {
-        "mp4v": "MPEG-4 Part 2 (legacy)",
-        "avc1": "H.264/MPEG-4 AVC (modern compatibility)",
-        "h264": "Alternative H.264 codec",
-        "X264": "X264 encoder",
-    }
-    attempted_codecs = []
-    for codec in supported_codecs:
-        attempted_codecs.append(codec)
+    selected_codec = None
+    for codec, description in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
+            selected_codec = description
             break
     validate_codec(fourcc)
+    if not selected_codec:
+        raise RuntimeError(f"Failed to initialize any supported codec from {[c[0] for c in codec_priority]}")
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
