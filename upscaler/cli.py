@@ -10,12 +10,14 @@ import cv2 as cv  # pylint: disable=import-error
 from .core import upscale_video
 
 
-def main() -> None:
-    """Command line interface for video upscaling.
-
+def parse_args() -> argparse.Namespace:
+    """Parse and validate command line arguments.
+    
+    Returns:
+        Parsed arguments namespace
+        
     Raises:
-        ValueError: For invalid inputs or scaling parameters
-        RuntimeError: If video processing fails at any stage
+        SystemExit: For invalid arguments or help request
     """
     parser = argparse.ArgumentParser(
         description="Upscale video dimensions using spatial interpolation methods",
@@ -34,12 +36,17 @@ def main() -> None:
         help="Interpolation method (nearest=fastest, lanczos=best quality)",
     )
 
-    args = parser.parse_args()
+    return parser.parse_args()
 
+def main() -> None:
+    """Command line interface entry point for video upscaling."""
+    args = parse_args()
+    
+    # Validate scale factor early
     if args.scale < 1:
         raise ValueError(f"Invalid scale factor {args.scale} - must be ≥1")
 
-    # Map interpolation names to OpenCV constants
+    # Map and validate interpolation method
     interpolation_map = {
         "nearest": cv.INTER_NEAREST,  # Fastest but lowest quality
         "linear": cv.INTER_LINEAR,  # Balance of speed/quality

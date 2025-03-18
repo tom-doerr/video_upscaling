@@ -4,7 +4,59 @@ from pathlib import Path
 import cv2 as cv  # pylint: disable=import-error
 
 
-def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
+def validate_codec(fourcc: int) -> None:
+    """Validate video codec is supported.
+    
+    Args:
+        fourcc: OpenCV fourcc code
+        
+    Raises:
+        RuntimeError: If codec is not supported
+    """
+    if fourcc == 0:
+        raise RuntimeError(
+            "Failed to initialize video codec - try different output extension "
+            "(supported formats: .mp4, .avi, .mov)"
+        )
+
+def process_frames(
+    cap: cv.VideoCapture,
+    scale_factor: int,
+    interpolation: int
+) -> tuple[int, int, int]:
+    """Process video frames and yield upscaled versions.
+    
+    Args:
+        cap: OpenCV video capture object
+        scale_factor: Scaling multiplier
+        interpolation: OpenCV interpolation method
+        
+    Yields:
+        Tuple of (original width, original height, upscaled frame)
+    """
+    frame_count = 0
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+            
+        if frame.size == 0:
+            raise RuntimeError(f"Received empty frame at position {frame_count}")
+
+        upscaled = cv.resize(
+            frame,
+            None,
+            fx=scale_factor,
+            fy=scale_factor,
+            interpolation=interpolation,
+        )
+        yield frame.shape[1], frame.shape[0], upscaled
+        frame_count += 1
+
+    if frame_count == 0:
+        raise RuntimeError("No frames processed - input video may be corrupted")
+
+def upscale_video(
     input_path: Path,
     output_path: Path,
     scale_factor: int,
@@ -70,10 +122,13 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
             f"Invalid video dimensions {width}x{height} - must be positive"
         )
 
+    # Validate interpolation method
+    if interpolation not in {cv.INTER_NEAREST, cv.INTER_LINEAR, cv.INTER_CUBIC, cv.INTER_LANCZOS4}:
+        raise ValueError(f"Invalid interpolation method: {interpolation}")
+
     # Set up output video codec and writer
-    fourcc: int = cv.VideoWriter_fourcc(*"mp4v")
-    if fourcc == 0:
-        raise RuntimeError("Failed to initialize MP4V codec - check codec support")
+    fourcc = cv.VideoWriter_fourcc(*"mp4v")
+    validate_codec(fourcc)
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
@@ -89,27 +144,14 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         )
 
     try:
-        frame_count = 0
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-            # Upscale frame with validation
-            if frame.size == 0:
-                raise RuntimeError(f"Received empty frame at position {frame_count}")
-
-            upscaled = cv.resize(
-                frame,
-                None,
-                fx=scale_factor,
-                fy=scale_factor,
-                interpolation=interpolation,
-            )
+        # Process frames and write output
+        for orig_width, orig_height, upscaled in process_frames(cap, scale_factor, interpolation):
+            if (upscaled.shape[1], upscaled.shape[0]) != (output_width, output_height):
+                raise RuntimeError(
+                    f"Frame size mismatch: Expected {output_width}x{output_height}, "
+                    f"got {upscaled.shape[1]}x{upscaled.shape[0]}"
+                )
             out.write(upscaled)
-            frame_count += 1
-
-        if frame_count == 0:
-            raise RuntimeError("No frames processed - input video may be corrupted")
 
     except cv.error as e:
         raise RuntimeError(f"OpenCV processing error: {e}") from e
