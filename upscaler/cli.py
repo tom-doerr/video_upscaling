@@ -1,4 +1,8 @@
-"""Command line interface for video upscaling package."""
+"""Command line interface for video upscaling package.
+
+Example usage:
+    upscale-video input.mp4 output.mp4 --scale 2 --interpolation cubic
+"""
 
 import argparse
 from pathlib import Path
@@ -8,10 +12,13 @@ from .core import upscale_video
 
 def main() -> None:
     """Command line interface for video upscaling.
-
+    
+    Args:
+        args: Command line arguments parsed by argparse
+        
     Raises:
-        ValueError: If invalid arguments are provided
-        RuntimeError: If video processing fails
+        ValueError: For invalid inputs or scaling parameters
+        RuntimeError: If video processing fails at any stage
     """
     parser = argparse.ArgumentParser(
         description="Upscale video dimensions using spatial interpolation methods",

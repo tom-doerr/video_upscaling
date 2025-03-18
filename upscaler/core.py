@@ -4,24 +4,37 @@ from pathlib import Path
 import cv2 as cv  # pylint: disable=import-error
 
 
-def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
+def upscale_video(  # pylint: disable=too-many-locals
     input_path: Path,
     output_path: Path,
     scale_factor: int,
     interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method.
+    
+    Processes video frame-by-frame, resizing each frame using the specified
+    scaling factor and interpolation method. Maintains original frame rate
+    and aspect ratio.
 
     Args:
-        input_path: Path to input video file
-        output_path: Path for output video file
+        input_path: Path to existing input video file
+        output_path: Path for new output video file (will be overwritten)
         scale_factor: Multiplier for video dimensions (must be ≥1)
         interpolation: OpenCV interpolation method constant to use
 
     Raises:
-        ValueError: For invalid inputs or scaling parameters
+        ValueError: For invalid paths or scaling parameters
         RuntimeError: If video processing fails at any stage
+        FileNotFoundError: If input file doesn't exist
     """
+    # Validate input/output paths before processing
+    if not input_path.is_file():
+        raise FileNotFoundError(f"Input file not found: {input_path}")
+    if output_path.is_dir():
+        raise ValueError(f"Output path is a directory: {output_path}")
+        
+    # Ensure output directory exists
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))
     if not cap.isOpened():
@@ -42,7 +55,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         )
     # Validate scaling parameters
     if scale_factor < 1:
-        raise ValueError(f"Scale factor must be ≥1, got {scale_factor}")
+        raise ValueError(f"Scale factor must be ≥1 (got {scale_factor})")
 
     # Set up output video codec and writer
     fourcc: int = cv.VideoWriter_fourcc(*"mp4v")

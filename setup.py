@@ -1,4 +1,8 @@
-"""Package configuration for video upscaling tool."""
+"""Package configuration for video upscaling tool.
+
+The package provides spatial resolution enhancement through various
+interpolation methods using OpenCV's optimized algorithms.
+"""
 
 from setuptools import setup, find_packages
 
@@ -16,4 +20,15 @@ setup(
         ],
     },
     python_requires=">=3.8",
+    author="Your Name",
+    author_email="your.email@example.com",
+    description="Video upscaling tool using spatial interpolation methods",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    url="https://github.com/yourusername/video-upscaler",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
 )
