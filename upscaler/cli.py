@@ -52,7 +52,7 @@ def main() -> None:
             raise ValueError(f"Invalid scale factor {args.scale} - must be >=1")
 
         # Validate output format
-        if args.output.suffix.lower() not in ('.mp4', '.avi', '.mov'):
+        if args.output.suffix.lower() not in (".mp4", ".avi", ".mov"):
             raise ValueError(
                 f"Unsupported output format '{args.output.suffix}'. "
                 "Supported formats: .mp4, .avi, .mov"
