@@ -35,7 +35,7 @@ def process_frames(
     interpolation: int,
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
     """Process video frames with enhanced validation and error handling.
-    
+
     Args:
         cap: OpenCV video capture object (must be already opened)
         scale_factor: Integer scaling multiplier (>=1)
@@ -187,8 +187,10 @@ def upscale_video(  # pylint: disable=too-many-locals
         frame_count = 0
         for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
             frame_count += 1
-            if (upscaled.shape[1] != output_width  # type: ignore
-                or upscaled.shape[0] != output_height):  # type: ignore
+            if (
+                upscaled.shape[1] != output_width  # type: ignore
+                or upscaled.shape[0] != output_height
+            ):  # type: ignore
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
                     f"Expected {output_width}x{output_height}, "
