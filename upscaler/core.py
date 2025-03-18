@@ -240,18 +240,18 @@ def upscale_video(
         )
 
     # Set up output video codec and writer with validated codec
-    fourcc, codec_priority = _select_video_codec()
-    output_width, output_height = width * scale_factor, height * scale_factor
-    if output_width > 7680 or output_height > 4320:  # 8K resolution check
+    codec_info = _select_video_codec()
+    output_dims = (width * scale_factor, height * scale_factor)
+    if output_dims[0] > 7680 or output_dims[1] > 4320:  # 8K resolution check
         raise ValueError(
-            f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
+            f"Output dimensions {output_dims[0]}x{output_dims[1]} exceed 8K UHD resolution"
         )
     out = _create_video_writer(
         output_path,
-        fourcc,
+        codec_info[0],
         fps,
-        (output_width, output_height),
-        codec_priority,
+        output_dims,
+        codec_info[1],
     )
 
     try:
@@ -259,10 +259,10 @@ def upscale_video(
         for frame_count, (_, _, upscaled) in enumerate(
             process_frames(cap, scale_factor, interpolation), 1
         ):
-            if upscaled.shape[1] != output_width or upscaled.shape[0] != output_height:
+            if upscaled.shape[1] != output_dims[0] or upscaled.shape[0] != output_dims[1]:
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
-                    f"Expected {output_width}x{output_height}, "
+                    f"Expected {output_dims[0]}x{output_dims[1]}, "
                     f"got {upscaled.shape[1]}x{upscaled.shape[0]}. "
                     "This could indicate memory corruption or hardware acceleration issues."
                 )
