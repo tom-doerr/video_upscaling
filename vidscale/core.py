@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import subprocess
+import shutil
 import cv2
 
 
@@ -60,20 +61,24 @@ def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) ->
     for frame_path in temp_dir.glob("*.png"):
         upscale_image(frame_path, frame_path, scale_factor)
     # Rebuild video
-    subprocess.run(
-        [
-            "ffmpeg",
-            "-framerate",
-            "30",
-            "-i",
-            str(temp_dir / "frame_%04d.png"),
-            "-c:v",
-            "libx264",
-            "-preset",
-            "slow",
-            "-crf",
-            "20",
-            str(output_path),
-        ],
-        check=True,
-    )
+    try:
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-framerate",
+                "30",
+                "-i",
+                str(temp_dir / "frame_%04d.png"),
+                "-c:v",
+                "libx264",
+                "-preset",
+                "slow",
+                "-crf",
+                "20",
+                str(output_path),
+            ],
+            check=True,
+        )
+    finally:
+        # Clean up temporary directory
+        shutil.rmtree(temp_dir, ignore_errors=True)

@@ -34,10 +34,22 @@ def test_cli_video_upscaling(tmp_path):
     """Test video upscaling CLI command"""
     runner = CliRunner()
     input_path = tmp_path / "input.mp4"
-    output_path = tmp_path / "output.mp4"
+    output_path = tmp_path / "nested/output.mp4"  # Test directory creation
     input_path.touch()
 
     result = runner.invoke(
         main, ["video", str(input_path), str(output_path), "--scale", "2"]
     )
     assert result.exit_code == 0
+    assert output_path.exists()
+
+def test_cli_nonexistent_input(tmp_path):
+    """Test handling of non-existent input file"""
+    runner = CliRunner()
+    output_path = tmp_path / "output.jpg"
+    
+    result = runner.invoke(
+        main, ["image", "nonexistent.jpg", str(output_path), "--scale", "2"]
+    )
+    assert result.exit_code != 0
+    assert "does not exist" in result.output
