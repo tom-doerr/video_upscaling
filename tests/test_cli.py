@@ -6,6 +6,27 @@ from click.testing import CliRunner
 from vidscale.cli import main
 
 
+def test_cli_help():
+    """Test CLI help command"""
+    runner = CliRunner()
+    # Test main help
+    result = runner.invoke(main, ["--help"])
+    assert result.exit_code == 0
+    assert "Video upscaling CLI tool" in result.output
+    assert "image" in result.output
+    assert "video" in result.output
+    # Test image command help
+    result = runner.invoke(main, ["image", "--help"])
+    assert result.exit_code == 0
+    assert "Upscale an image" in result.output
+    assert "--scale" in result.output
+    # Test video command help
+    result = runner.invoke(main, ["video", "--help"])
+    assert result.exit_code == 0
+    assert "Upscale a video" in result.output
+    assert "--scale" in result.output
+
+
 def test_cli_image_upscaling(tmp_path):
     """Test image upscaling CLI command"""
     runner = CliRunner()
@@ -83,6 +104,8 @@ def test_cli_video_overwrite_protection(tmp_path):
     )
     assert result.exit_code != 0
     assert "already exists" in result.output
+
+
 def test_cli_ffmpeg_missing(mocker, tmp_path):
     """Test FFmpeg missing error handling"""
     runner = CliRunner()
@@ -91,8 +114,9 @@ def test_cli_ffmpeg_missing(mocker, tmp_path):
     input_path.touch()
 
     # Simulate FFmpeg not being found
-    mocker.patch("vidscale.core._validate_ffmpeg",
-                side_effect=RuntimeError("FFmpeg is required"))
+    mocker.patch(
+        "vidscale.core._validate_ffmpeg", side_effect=RuntimeError("FFmpeg is required")
+    )
     result = runner.invoke(
         main, ["video", str(input_path), str(output_path), "--scale", "2"]
     )

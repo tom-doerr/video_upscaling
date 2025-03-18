@@ -7,7 +7,14 @@ from vidscale.core import upscale_image, upscale_video
 
 @click.group()
 def main():
-    """Video upscaling CLI tool"""
+    """Video upscaling CLI tool
+    
+    Examples:
+    
+    \b
+    $ vidscale image input.jpg output.jpg --scale 2
+    $ vidscale video input.mp4 output.mp4 --scale 2
+    """
 
 
 @main.command()
