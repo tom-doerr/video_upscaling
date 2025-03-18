@@ -16,7 +16,6 @@ def main() -> None:
     Raises:
         ValueError: For invalid inputs or scaling parameters
         RuntimeError: If video processing fails at any stage
-        KeyError: If invalid interpolation method is specified
     """
     parser = argparse.ArgumentParser(
         description="Upscale video dimensions using spatial interpolation methods",
@@ -48,11 +47,19 @@ def main() -> None:
         "lanczos": cv.INTER_LANCZOS4,  # Highest quality but slowest
     }
 
+    try:
+        interpolation_method = interpolation_map[args.interpolation]
+    except KeyError as e:
+        raise ValueError(
+            f"Invalid interpolation method '{args.interpolation}'. "
+            f"Valid choices are: {list(interpolation_map.keys())}"
+        ) from e
+
     upscale_video(
         input_path=args.input,
         output_path=args.output,
         scale_factor=args.scale,
-        interpolation=interpolation_map[args.interpolation],
+        interpolation=interpolation_method,
     )
 
 

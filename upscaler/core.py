@@ -28,7 +28,13 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         FileNotFoundError: If input file doesn't exist
     """
 
-    def _validate_inputs() -> None:  # pylint: disable=missing-function-docstring
+    def _validate_inputs() -> None:
+        """Validate all input parameters and paths.
+        
+        Raises:
+            FileNotFoundError: If input file is missing
+            ValueError: For invalid paths or scaling parameters
+        """
         """Validate all input parameters and paths."""
         if not input_path.is_file():
             raise FileNotFoundError(f"Input file not found: {input_path}")
