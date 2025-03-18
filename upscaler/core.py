@@ -158,6 +158,7 @@ def _select_video_codec() -> tuple[int, list[str]]:
 
     Raises:
         RuntimeError: If no valid codec could be initialized
+    """
     codec_priority = [
         "mp4v",  # MPEG-4 Part 2 (required for .mp4)
         "avc1",  # H.264/AVC
@@ -182,7 +183,6 @@ def upscale_video(  # pylint: disable=too-many-branches
     """Upscale video frames using specified interpolation method with validation.
     
     Maintains original frame rate and aspect ratio using streaming processing.
-    """Upscale video frames using specified interpolation method with validation.
 
     Example:
         >>> upscale_video(input_path=Path("input.mp4"),
