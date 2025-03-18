@@ -37,9 +37,9 @@ def main() -> None:
 
     # Map interpolation names to OpenCV constants
     interpolation_map = {
-        "nearest": cv2.INTER_NEAREST,  # Fastest but lowest quality
-        "linear": cv2.INTER_LINEAR,  # Balance of speed/quality
-        "cubic": cv2.INTER_CUBIC,  # Slower but higher quality (default)
+        "nearest": cv.INTER_NEAREST,  # Fastest but lowest quality
+        "linear": cv.INTER_LINEAR,  # Balance of speed/quality
+        "cubic": cv.INTER_CUBIC,  # Slower but higher quality (default)
         "lanczos": cv.INTER_LANCZOS4,  # Highest quality but slowest
     }
 

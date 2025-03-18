@@ -1,10 +1,10 @@
 """Core video upscaling functionality using OpenCV."""
 
 from pathlib import Path
-import cv2  # pylint: disable=import-error
+import cv2 as cv  # pylint: disable=import-error
 
 
-def upscale_video(
+def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
     input_path: Path,
     output_path: Path,
     scale_factor: int,
