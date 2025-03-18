@@ -25,7 +25,13 @@ def parse_args() -> argparse.Namespace:
         prog="upscale-video",
         description="Upscale video dimensions using spatial interpolation methods",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        epilog="Note: Output video format is determined by the file extension (supports .mp4, .avi, .mov)",
+        epilog="Note: Output video format is determined by the file extension "
+               "(supports .mp4, .avi, .mov)",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}"
     )
     parser.add_argument("input", type=Path, help="Input video path")
     parser.add_argument("output", type=Path, help="Output video path")
@@ -62,7 +68,7 @@ def main() -> None:
     )
 
     try:
-        args = parser.parse_args()
+        args = parse_args()
         # Validate scale factor early
         if args.scale < 1:
             raise ValueError(f"Invalid scale factor {args.scale} - must be >= 1")
