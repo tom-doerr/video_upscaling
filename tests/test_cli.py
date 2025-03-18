@@ -13,9 +13,9 @@ def test_cli_image_upscaling(tmp_path):
     output_path = tmp_path / "output.jpg"
 
     # Create valid test image
-    cv2.imwrite(
+    cv2.imwrite(  # pylint: disable=no-member
         str(input_path), np.zeros((100, 100, 3), dtype=np.uint8)
-    )  # pylint: disable=no-member
+    )
 
     result = runner.invoke(
         main, ["image", str(input_path), str(output_path), "--scale", "2"]
@@ -49,7 +49,6 @@ def test_cli_video_upscaling(tmp_path, mocker):
     input_path = tmp_path / "input.mp4"
     output_path = tmp_path / "nested/output.mp4"
     input_path.touch()
-    
     # Mock video processing to avoid FFmpeg calls
     mocker.patch("vidscale.core.upscale_video")
 

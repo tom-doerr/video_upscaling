@@ -81,7 +81,6 @@ def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) ->
         text=True
     )
     frame_rate = probe.stdout.strip()
-    
     # Rebuild video with original frame rate
     try:
         subprocess.run(
