@@ -14,7 +14,8 @@ def main() -> None:
         RuntimeError: If video processing fails
     """
     parser = argparse.ArgumentParser(
-        description="Upscale video using interpolation methods"
+        description="Upscale video dimensions using spatial interpolation methods",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("input", type=Path, help="Input video path")
     parser.add_argument("output", type=Path, help="Output video path")
@@ -30,6 +31,9 @@ def main() -> None:
     )
 
     args = parser.parse_args()
+
+    if args.scale < 1:
+        raise ValueError(f"Invalid scale factor {args.scale} - must be ≥1")
 
     # Map interpolation names to OpenCV constants
     interpolation_map = {

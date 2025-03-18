@@ -4,7 +4,7 @@ from pathlib import Path
 import cv2  # pylint: disable=import-error
 
 
-def upscale_video(  # pylint: disable=too-many-locals
+def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
     input_path: Path,
     output_path: Path,
     scale_factor: int,
@@ -30,18 +30,32 @@ def upscale_video(  # pylint: disable=too-many-locals
             "check if file exists and codec is supported"
         )
 
-    # Get video properties with explicit type conversion
+    # Get and validate video properties
     fps: float = cap.get(cv2.CAP_PROP_FPS)
     width: int = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height: int = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    
+    if fps <= 0:
+        raise ValueError(f"Invalid frame rate {fps} - must be positive")
+    if width <= 0 or height <= 0:
+        raise ValueError(
+            f"Invalid video dimensions {width}x{height} - must be positive"
+        )
     # Validate scaling parameters
     if scale_factor < 1:
         raise ValueError(f"Scale factor must be ≥1, got {scale_factor}")
 
-    # Set up output video with validation
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    output_width = width * scale_factor
-    output_height = height * scale_factor
+    # Set up output video codec and writer
+    fourcc: int = cv2.VideoWriter_fourcc(*"mp4v")
+    if fourcc == 0:
+        raise RuntimeError("Failed to initialize MP4V codec - check codec support")
+    output_width: int = width * scale_factor
+    output_height: int = height * scale_factor
+    
+    if output_width > 7680 or output_height > 4320:  # 8K resolution check
+        raise ValueError(
+            f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
+        )
     out = cv2.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))
 
     if not out.isOpened():
