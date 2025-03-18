@@ -1,0 +1,1 @@
+"""vidscale package initialization"""

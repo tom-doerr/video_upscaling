@@ -1,9 +1,11 @@
 """Tests for core upscaling functionality"""
 
+from pathlib import Path
+import subprocess
+from unittest.mock import patch
 import pytest
 import cv2  # pylint: disable=import-error
 import numpy as np
-from unittest.mock import patch
 from vidscale.core import upscale_image, upscale_video
 
 
@@ -13,13 +15,13 @@ def test_upscale_image(tmp_path):
     test_img = np.random.randint(0, 255, (100, 100, 3), dtype=np.uint8)
     input_path = tmp_path / "input.jpg"
     output_path = tmp_path / "output.jpg"
-    cv2.imwrite(str(input_path), test_img)
+    cv2.imwrite(str(input_path), test_img)  # pylint: disable=no-member
 
     # Test upscaling
     upscale_image(input_path, output_path, scale_factor=2)
 
     # Verify output
-    result = cv2.imread(str(output_path))
+    result = cv2.imread(str(output_path))  # pylint: disable=no-member
     assert result.shape == (200, 200, 3)
     assert result.dtype == np.uint8
     # Verify some pixel values changed (not just black/white)
@@ -39,11 +41,9 @@ def test_upscale_video_invalid_input(tmp_path):
     """Test video upscaling with invalid input"""
     input_path = tmp_path / "input.mp4"
     output_path = tmp_path / "output.mp4"
-    
     # Test with non-existent input file
     with pytest.raises(ValueError):
         upscale_video(input_path, output_path, 2)
-    
     # Test with invalid scale factor
     input_path.touch()
     with pytest.raises(ValueError):
@@ -55,7 +55,6 @@ def test_upscale_video_ffmpeg_failure(mock_run, tmp_path):
     mock_run.side_effect = subprocess.CalledProcessError(1, "ffmpeg")
     input_path = tmp_path / "input.mp4"
     input_path.touch()
-    
     with pytest.raises(RuntimeError):
         upscale_video(input_path, tmp_path / "output.mp4", 2)
 

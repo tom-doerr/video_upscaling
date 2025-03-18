@@ -20,7 +20,6 @@ def image(input_path, output_path, scale):
     output_path = Path(output_path)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    
     try:
         upscale_image(input_path, output_path, scale)
         click.echo(f"Successfully upscaled image by {scale}x")
@@ -39,7 +38,6 @@ def video(input_path, output_path, scale):
     output_path = Path(output_path)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    
     try:
         upscale_video(input_path, output_path, scale)
         click.echo(f"Successfully upscaled video by {scale}x")
