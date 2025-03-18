@@ -102,16 +102,17 @@ def process_frames(
 
 def _get_video_properties(cap: cv.VideoCapture) -> tuple[float, int, int]:
     """Get and validate essential video properties from capture object.
-    
+
     Args:
         cap: OpenCV video capture object
-        
+
     Returns:
         Tuple of (fps, width, height)
-        
+
     Raises:
         RuntimeError: If any property is invalid
     """
+
     def get_checked_prop(prop_id: int, name: str) -> float:
         """Get property with validation."""
         value = cap.get(prop_id)
@@ -126,9 +127,12 @@ def _get_video_properties(cap: cv.VideoCapture) -> tuple[float, int, int]:
     if fps <= 0:
         raise ValueError(f"Invalid frame rate {fps} - must be positive")
     if width <= 0 or height <= 0:
-        raise ValueError(f"Invalid video dimensions {width}x{height} - must be positive")
+        raise ValueError(
+            f"Invalid video dimensions {width}x{height} - must be positive"
+        )
 
     return fps, width, height
+
 
 def _create_video_writer(
     output_path: Path,
@@ -138,17 +142,14 @@ def _create_video_writer(
     output_height: int,
 ) -> cv.VideoWriter:
     """Create and validate video writer object."""
-    out = cv.VideoWriter(
-        str(output_path),
-        fourcc,
-        fps,
-        (output_width, output_height))
+    out = cv.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))
     if not out.isOpened():
         raise RuntimeError(
             f"Failed to initialize video writer for {output_path} - "
             "verify directory permissions and codec support"
         )
     return out
+
 
 def _select_video_codec() -> tuple[int, str]:
     """Select appropriate video codec with validation."""
@@ -164,6 +165,7 @@ def _select_video_codec() -> tuple[int, str]:
             return fourcc, description
     validate_codec(0)  # Will throw error
     raise RuntimeError("Code path should never be reached")  # For type checker
+
 
 def upscale_video(
     input_path: Path,
@@ -237,7 +239,9 @@ def upscale_video(
         )
 
     # Set up output video codec and writer with modern codec priority
-    fourcc, _ = _select_video_codec()  # _ indicates we're intentionally ignoring the codec description
+    fourcc, _ = (
+        _select_video_codec()
+    )  # _ indicates we're intentionally ignoring the codec description
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
