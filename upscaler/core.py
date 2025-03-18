@@ -169,12 +169,12 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
     attempted_codecs = []
     supported_codecs: Dict[str, str] = {
         "avc1": "H.264/MPEG-4 AVC (best modern compatibility)",
-        "mp4v": "MPEG-4 Part 2 (legacy)", 
+        "mp4v": "MPEG-4 Part 2 (legacy)",
         "X264": "X264 encoder",
         "XVID": "XVID MPEG-4",
     }
     attempted_codecs = []
-    for codec in SUPPORTED_CODECS:
+    for codec in supported_codecs:
         attempted_codecs.append(codec)
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
