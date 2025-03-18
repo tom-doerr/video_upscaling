@@ -216,14 +216,11 @@ def upscale_video(
             raise ValueError(f"Scale factor must be >=1 (got {scale_factor})")
 
     _validate_inputs()
-    try:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        if not output_path.parent.is_dir():
-            raise RuntimeError(f"Failed to create output directory: {output_path.parent}")
-        if not os.access(output_path.parent, os.W_OK):
-            raise PermissionError(f"Write access denied to: {output_path.parent}")
-    except Exception as e:
-        raise
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if not output_path.parent.is_dir():
+        raise RuntimeError(f"Failed to create output directory: {output_path.parent}")
+    if not os.access(output_path.parent, os.W_OK):
+        raise PermissionError(f"Write access denied to: {output_path.parent}")
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
