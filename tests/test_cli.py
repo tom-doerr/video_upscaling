@@ -89,11 +89,10 @@ def test_cli_ffmpeg_missing(mocker, tmp_path):
     input_path = tmp_path / "input.mp4"
     output_path = tmp_path / "output.mp4"
     input_path.touch()
-    
+
     # Simulate FFmpeg not being found
-    mocker.patch("vidscale.core._validate_ffmpeg", 
+    mocker.patch("vidscale.core._validate_ffmpeg",
                 side_effect=RuntimeError("FFmpeg is required"))
-    
     result = runner.invoke(
         main, ["video", str(input_path), str(output_path), "--scale", "2"]
     )
