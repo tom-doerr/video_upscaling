@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Video upscaling package providing spatial resolution enhancement.
 
 Features:

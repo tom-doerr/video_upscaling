@@ -34,7 +34,7 @@ def validate_codec(fourcc: int) -> None:
 
 def process_frames(
     cap: cv.VideoCapture,
-    scale_factor: int,
+    scale_factor: float,
     interpolation: int,
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
     """Process video frames with enhanced validation and error handling.
@@ -114,8 +114,10 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
             FileNotFoundError: If input file is missing
             ValueError: For invalid paths or scaling parameters
         """
-        if not input_path.is_file():
+        if not input_path.exists():
             raise FileNotFoundError(f"Input file not found: {input_path}")
+        if not input_path.is_file():
+            raise ValueError(f"Input path is not a file: {input_path}")
         if output_path.is_dir():
             raise ValueError(f"Output path is a directory: {output_path}")
         if not output_path.parent.exists():
@@ -129,6 +131,8 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
 
     _validate_inputs()
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    if not output_path.parent.exists():
+        raise FileNotFoundError(f"Output directory creation failed: {output_path.parent}")
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
@@ -168,7 +172,6 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
 
     # Set up output video codec and writer with prioritized codec list
     fourcc = 0
-    attempted_codecs = []
     supported_codecs: Dict[str, str] = {
         "avc1": "H.264/MPEG-4 AVC (best modern compatibility)",
         "mp4v": "MPEG-4 Part 2 (legacy)",
