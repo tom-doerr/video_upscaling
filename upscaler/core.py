@@ -209,11 +209,6 @@ def upscale_video(  # pylint: disable=too-many-branches
     
     Maintains original frame rate and aspect ratio using streaming processing.
     """
-    input_path: Path,
-    output_path: Path,
-    scale_factor: float,
-    interpolation: int = cv.INTER_CUBIC,
-) -> None:
     """Upscale video frames using specified interpolation method with validation.
 
     Example:
