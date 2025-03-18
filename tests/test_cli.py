@@ -11,7 +11,7 @@ def test_cli_image_upscaling(tmp_path):
     runner = CliRunner()
     input_path = tmp_path / "input.jpg"
     output_path = tmp_path / "output.jpg"
-    
+
     # Create valid test image
     cv2.imwrite(str(input_path), np.zeros((100, 100, 3), dtype=np.uint8))
     
@@ -20,7 +20,7 @@ def test_cli_image_upscaling(tmp_path):
     )
     assert result.exit_code == 0
     assert output_path.exists()
-    
+
     # Test overwrite protection
     result = runner.invoke(
         main, ["image", str(input_path), str(output_path), "--scale", "2"]

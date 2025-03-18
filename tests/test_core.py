@@ -44,15 +44,15 @@ def test_upscale_video_invalid_input(tmp_path):
     """Test video upscaling with invalid input"""
     input_path = tmp_path / "input.mp4"
     output_path = tmp_path / "output.mp4"
-    
+
     # Test with non-existent input file
     with pytest.raises(ValueError):
         upscale_video(input_path, output_path, 2)
-        
+
     # Test with invalid scale factor
     with pytest.raises(ValueError):
         upscale_video(input_path, output_path, 0)
-        
+
     # Test with existing invalid video file
     input_path.touch()
     with pytest.raises(ValueError, match="Failed to extract frames"):

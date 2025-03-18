@@ -55,14 +55,14 @@ def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) ->
         raise RuntimeError("FFmpeg is required for video processing") from None
     if not input_path.exists():
         raise ValueError(f"Input file {input_path} does not exist")
-        
+
     temp_dir = input_path.parent / "temp_frames"
     temp_dir.mkdir(exist_ok=True)
-    
+
     # Extract frames
     try:
         subprocess.run(
-            ["ffmpeg", "-i", str(input_path), str(temp_dir / "frame_%04d.png")], 
+            ["ffmpeg", "-i", str(input_path), str(temp_dir / "frame_%04d.png")],
             check=True,
             capture_output=True,
             text=True
