@@ -25,7 +25,9 @@ setup(
     author_email="your.email@example.com",
     description="Video upscaling tool using spatial interpolation methods",
     long_description=(
-        Path("README.md").read_text(encoding="utf-8") if Path("README.md").exists() else ""
+        Path("README.md").read_text(encoding="utf-8")
+        if Path("README.md").exists()
+        else ""
     ),
     long_description_content_type="text/markdown",
     url="https://github.com/yourusername/video-upscaler",
