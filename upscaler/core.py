@@ -142,7 +142,7 @@ def _create_video_writer(
         str(output_path), 
         fourcc, 
         fps, 
-        (output_width, output_height)
+        (output_width, output_height))
         
     if not out.isOpened():
         raise RuntimeError(
