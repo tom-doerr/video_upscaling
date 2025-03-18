@@ -42,10 +42,14 @@ def process_frames(
         interpolation: OpenCV interpolation method constant
 
     Yields:
-        Tuple of (original_width, original_height, upscaled_frame)
+        Tuple containing:
+        - original_width: Source frame width in pixels
+        - original_height: Source frame height in pixels
+        - upscaled_frame: Processed frame as numpy array
 
     Raises:
         RuntimeError: If frame processing fails at any stage
+            or empty frame is received
     """
     frame_count = 0
     while cap.isOpened():
@@ -111,6 +115,10 @@ def upscale_video(  # pylint: disable=too-many-locals
             raise FileNotFoundError(f"Input file not found: {input_path}")
         if output_path.is_dir():
             raise ValueError(f"Output path is a directory: {output_path}")
+        if not output_path.parent.exists():
+            raise ValueError(f"Output directory does not exist: {output_path.parent}")
+        if not os.access(output_path.parent, os.W_OK):
+            raise PermissionError(f"Output directory not writable: {output_path.parent}")
         if scale_factor < 1:
             raise ValueError(f"Scale factor must be >=1 (got {scale_factor})")
 
@@ -153,15 +161,16 @@ def upscale_video(  # pylint: disable=too-many-locals
             f"Valid methods: {', '.join(VALID_INTERPOLATIONS.values())}"
         )
 
-    # Set up output video codec and writer
-    # Try codecs in reliability order with fallbacks (H.264 first for modern compatibility)
+    # Set up output video codec and writer with prioritized codec list
     fourcc = 0
-    # Try codecs in reliability order with fallbacks
+    attempted_codecs = []
     for codec in [
-        "mp4v",  # MPEG-4 Part 2 (better cross-platform compatibility)
-        "avc1",  # H.264/MPEG-4 AVC
-        "X264",  # X264 encoder
+        "avc1",  # H.264/MPEG-4 AVC (best modern compatibility)
+        "mp4v",  # MPEG-4 Part 2 (legacy)
+        "X264",   # X264 encoder
+        "XVID",   # XVID MPEG-4
     ]:
+        attempted_codecs.append(codec)
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
             break

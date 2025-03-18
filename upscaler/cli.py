@@ -46,7 +46,17 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
-    """Command line interface entry point for video upscaling."""
+    """Command line interface entry point for video upscaling.
+    
+    Exit codes:
+        0: Success
+        1: Input validation error
+        2: Processing error
+        3: Unexpected error
+    
+    Raises:
+        SystemExit: Always exits with status code
+    """
     try:
         args = parse_args()
         # Validate scale factor early
@@ -86,6 +96,12 @@ def main() -> None:
         error_msg = f"Error processing {args.input}: {e.__class__.__name__} - {e}"
         print(error_msg, file=sys.stderr)
         sys.exit(1)
+    except PermissionError as e:
+        print(f"Permission denied: {e}", file=sys.stderr)
+        sys.exit(3)
+    except Exception as e:  # pylint: disable=broad-except
+        print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
+        sys.exit(3)
 
 
 if __name__ == "__main__":
