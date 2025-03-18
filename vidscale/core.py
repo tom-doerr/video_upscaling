@@ -72,13 +72,23 @@ def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) ->
     # Process frames
     for frame_path in temp_dir.glob("*.png"):
         upscale_image(frame_path, frame_path, scale_factor)
-    # Rebuild video
+    # Get source video frame rate
+    probe = subprocess.run(
+        ["ffprobe", "-v", "error", "-select_streams", "v:0",
+         "-show_entries", "stream=r_frame_rate", "-of", "csv=p=0", str(input_path)],
+        check=True,
+        capture_output=True,
+        text=True
+    )
+    frame_rate = probe.stdout.strip()
+    
+    # Rebuild video with original frame rate
     try:
         subprocess.run(
             [
                 "ffmpeg",
                 "-framerate",
-                "30",
+                frame_rate,
                 "-i",
                 str(temp_dir / "frame_%04d.png"),
                 "-c:v",
