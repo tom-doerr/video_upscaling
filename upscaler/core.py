@@ -151,7 +151,7 @@ def upscale_video(  # pylint: disable=too-many-locals
     if interpolation not in valid_interpolations:
         raise ValueError(
             f"Invalid interpolation method: {interpolation}. "
-            f"Valid methods: {', '.join(f'{k} ({v})' for k, v in valid_interpolations.items())}"
+            f"Valid methods: {', '.join(valid_interpolations.values())}"
         )
 
     # Set up output video codec and writer
@@ -160,7 +160,6 @@ def upscale_video(  # pylint: disable=too-many-locals
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
         if fourcc != 0:
             break
-    validate_codec(fourcc)
     validate_codec(fourcc)
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
