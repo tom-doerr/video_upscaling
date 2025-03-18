@@ -39,6 +39,7 @@ def upscale_video(
     
     out = cv2.VideoWriter(
         str(output_path), fourcc, fps, (output_width, output_height)
+    )
         
     if not out.isOpened():
         raise RuntimeError(
