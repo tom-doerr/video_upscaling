@@ -158,14 +158,6 @@ def _select_video_codec() -> tuple[int, list[str]]:
     Raises:
         RuntimeError: If no valid codec could be initialized
     """
-    """Select appropriate video codec with validation.
-
-    Returns:
-        Tuple containing fourcc code and list of tried codecs
-
-    Raises:
-        RuntimeError: If no valid codec could be initialized
-    """
     codec_priority = [
         "mp4v",  # MPEG-4 Part 2 (required for .mp4)
         "avc1",  # H.264/AVC
