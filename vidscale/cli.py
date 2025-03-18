@@ -1,11 +1,11 @@
+"""Command line interface for video upscaling package"""
 import click
 from pathlib import Path
-from .core import upscale_image, upscale_video
+from vidscale.core import upscale_image, upscale_video
 
 @click.group()
 def main():
     """Video upscaling CLI tool"""
-    pass
 
 @main.command()
 @click.argument("input_path", type=click.Path(exists=True))

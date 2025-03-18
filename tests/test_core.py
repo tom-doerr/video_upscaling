@@ -1,9 +1,11 @@
-import pytest
+"""Tests for core upscaling functionality"""
+import pytest  # pylint: disable=unused-import
 import cv2
 import numpy as np
 from vidscale.core import upscale_image, upscale_video
 
 def test_upscale_image(tmp_path):
+    """Test image upscaling functionality"""
     # Create test image
     test_img = np.random.randint(0, 255, (100, 100, 3), dtype=np.uint8)
     input_path = tmp_path / "input.jpg"

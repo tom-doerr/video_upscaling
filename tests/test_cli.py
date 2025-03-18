@@ -1,8 +1,9 @@
-import pytest
+"""Tests for command line interface"""
 from click.testing import CliRunner
 from vidscale.cli import main
 
 def test_cli_image_upscaling(tmp_path):
+    """Test image upscaling CLI command"""
     runner = CliRunner()
     input_path = tmp_path / "input.jpg"
     output_path = tmp_path / "output.jpg"

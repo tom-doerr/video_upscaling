@@ -1,6 +1,7 @@
+"""Core video upscaling functionality"""
+from pathlib import Path
 import subprocess
 import cv2
-from pathlib import Path
 
 def upscale_image(input_path: Path, output_path: Path, scale_factor: int = 2) -> None:
     """Upscale an image using bicubic interpolation"""
@@ -10,7 +11,7 @@ def upscale_image(input_path: Path, output_path: Path, scale_factor: int = 2) ->
     
     height, width = img.shape[:2]
     upscaled = cv2.resize(
-        img, 
+        img,
         (width * scale_factor, height * scale_factor),
         interpolation=cv2.INTER_CUBIC
     )
