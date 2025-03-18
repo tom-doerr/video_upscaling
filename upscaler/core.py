@@ -47,20 +47,6 @@ def process_frames(
     Raises:
         RuntimeError: If frame processing fails at any stage
     """
-
-    Args:
-        cap: OpenCV video capture object (must be already opened)
-        scale_factor: Integer scaling multiplier (≥1)
-        interpolation: OpenCV interpolation method constant
-
-    Yields:
-        Tuple containing:
-        - Original frame width
-        - Original frame height
-        - Upscaled frame as numpy array
-
-    Raises:
-        RuntimeError: If frame processing fails at any stage
     """
     frame_count = 0
     while cap.isOpened():
