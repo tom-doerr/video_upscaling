@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 import cv2 as cv  # pylint: disable=import-error,no-member
+from . import __version__
 from .core import upscale_video
 
 
