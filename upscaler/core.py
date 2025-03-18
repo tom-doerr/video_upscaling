@@ -153,7 +153,7 @@ def _create_video_writer(
 
 def _select_video_codec() -> tuple[int, list[str]]:  # type: ignore
     """Select appropriate video codec with validation.
-    
+
     Returns:
         Tuple containing fourcc code and list of tried codecs
     """

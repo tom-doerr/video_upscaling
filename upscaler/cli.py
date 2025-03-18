@@ -77,9 +77,9 @@ def main() -> None:
         # Map and validate interpolation method
         interpolation_map = {
             # pylint: disable=no-member
-            "nearest": cv.INTER_NEAREST,   # Fastest but lowest quality
-            "linear": cv.INTER_LINEAR,     # Balance of speed/quality
-            "cubic": cv.INTER_CUBIC,       # Slower but higher quality
+            "nearest": cv.INTER_NEAREST,  # Fastest but lowest quality
+            "linear": cv.INTER_LINEAR,  # Balance of speed/quality
+            "cubic": cv.INTER_CUBIC,  # Slower but higher quality
             "lanczos": cv.INTER_LANCZOS4,  # Highest quality but slowest
         }
 
