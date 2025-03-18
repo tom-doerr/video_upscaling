@@ -22,11 +22,11 @@ setup(
     },
     python_requires=">=3.8",
     author="Video Upscaler Maintainers",
-    author_email="maintainers@vidupscale.example",
+    author_email="maintainers@example.com",  # Valid email format
     description="High-quality video upscaling with multiple interpolation algorithms",
     long_description=Path("README.md").read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/video-upscaler",
+    url="https://github.com/example/video-upscaler",  # Valid placeholder URL
     classifiers=[
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",

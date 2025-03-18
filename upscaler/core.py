@@ -6,7 +6,7 @@ from typing import Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error
 
 # pylint: disable=no-member,no-name-in-module
-VALID_INTERPOLATIONS: dict[int, str] = {
+VALID_INTERPOLATIONS: Dict[int, str] = {  # type: ignore[name-defined]
     cv.INTER_NEAREST: "nearest neighbor",
     cv.INTER_LINEAR: "bilinear",
     cv.INTER_CUBIC: "bicubic",
@@ -75,7 +75,7 @@ def process_frames(
         raise RuntimeError("No frames processed - input video may be corrupted")
 
 
-def _get_video_properties(cap: cv.VideoCapture) -> tuple[float, int, int]:
+def _get_video_properties(cap: cv.VideoCapture) -> Tuple[float, int, int]:
     """Extract and validate video properties from capture object.
 
     Args:
