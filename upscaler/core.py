@@ -38,7 +38,7 @@ def process_frames(
     
     Args:
         cap: OpenCV video capture object (must be already opened)
-        scale_factor: Integer scaling multiplier (≥1)
+        scale_factor: Integer scaling multiplier (>=1)
         interpolation: OpenCV interpolation method constant
 
     Yields:
