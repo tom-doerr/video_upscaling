@@ -48,10 +48,10 @@ def main() -> None:
 
     # Map and validate interpolation method
     interpolation_map = {
-        "nearest": cv.INTER_NEAREST,  # Fastest but lowest quality
-        "linear": cv.INTER_LINEAR,  # Balance of speed/quality
-        "cubic": cv.INTER_CUBIC,  # Slower but higher quality (default)
-        "lanczos": cv.INTER_LANCZOS4,  # Highest quality but slowest
+        "nearest": cv.INTER_NEAREST,  # pylint: disable=no-member  # Fastest but lowest quality
+        "linear": cv.INTER_LINEAR,  # pylint: disable=no-member  # Balance of speed/quality
+        "cubic": cv.INTER_CUBIC,  # pylint: disable=no-member  # Slower but higher quality (default)
+        "lanczos": cv.INTER_LANCZOS4,  # pylint: disable=no-member  # Highest quality but slowest
     }
 
     try:

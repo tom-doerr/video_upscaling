@@ -22,7 +22,7 @@ def validate_codec(fourcc: int) -> None:
 
 
 def process_frames(
-    cap: cv.VideoCapture, scale_factor: int, interpolation: int
+    cap: cv.VideoCapture, scale_factor: int, interpolation: int  # pylint: disable=no-member
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
     """Process video frames and yield upscaled versions.
 
@@ -42,7 +42,7 @@ def process_frames(
         if frame.size == 0:
             raise RuntimeError(f"Received empty frame at position {frame_count}")
 
-        upscaled = cv.resize(
+        upscaled = cv.resize(  # pylint: disable=no-member
             frame,
             None,
             fx=scale_factor,
@@ -60,7 +60,7 @@ def upscale_video(  # pylint: disable=too-many-locals
     input_path: Path,
     output_path: Path,
     scale_factor: int,
-    interpolation: int = cv.INTER_CUBIC,
+    interpolation: int = cv.INTER_CUBIC,  # pylint: disable=no-member
 ) -> None:
     """Upscale video frames using specified interpolation method.
 
@@ -97,7 +97,7 @@ def upscale_video(  # pylint: disable=too-many-locals
     _validate_inputs()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     # Open input video with validation
-    cap = cv.VideoCapture(str(input_path))
+    cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
         raise ValueError(
             f"Could not open video file {input_path} - "
@@ -112,9 +112,9 @@ def upscale_video(  # pylint: disable=too-many-locals
             raise RuntimeError(f"Failed to get video property {prop_id}")
         return value
 
-    fps: float = get_video_prop(cv.CAP_PROP_FPS)
-    width: int = int(get_video_prop(cv.CAP_PROP_FRAME_WIDTH))
-    height: int = int(get_video_prop(cv.CAP_PROP_FRAME_HEIGHT))
+    fps: float = get_video_prop(cv.CAP_PROP_FPS)  # pylint: disable=no-member
+    width: int = int(get_video_prop(cv.CAP_PROP_FRAME_WIDTH))  # pylint: disable=no-member
+    height: int = int(get_video_prop(cv.CAP_PROP_FRAME_HEIGHT))  # pylint: disable=no-member
     if fps <= 0:
         raise ValueError(f"Invalid frame rate {fps} - must be positive")
     if width <= 0 or height <= 0:
@@ -124,15 +124,15 @@ def upscale_video(  # pylint: disable=too-many-locals
 
     # Validate interpolation method
     if interpolation not in {
-        cv.INTER_NEAREST,
-        cv.INTER_LINEAR,
-        cv.INTER_CUBIC,
-        cv.INTER_LANCZOS4,
+        cv.INTER_NEAREST,  # pylint: disable=no-member
+        cv.INTER_LINEAR,  # pylint: disable=no-member
+        cv.INTER_CUBIC,  # pylint: disable=no-member
+        cv.INTER_LANCZOS4,  # pylint: disable=no-member
     }:
         raise ValueError(f"Invalid interpolation method: {interpolation}")
 
     # Set up output video codec and writer
-    fourcc = cv.VideoWriter_fourcc(*"mp4v")
+    fourcc = cv.VideoWriter_fourcc(*"mp4v")  # pylint: disable=no-member
     validate_codec(fourcc)
     output_width: int = width * scale_factor
     output_height: int = height * scale_factor
@@ -140,7 +140,7 @@ def upscale_video(  # pylint: disable=too-many-locals
         raise ValueError(
             f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
         )
-    out = cv.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))
+    out = cv.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))  # pylint: disable=no-member
 
     if not out.isOpened():
         raise RuntimeError(
@@ -158,7 +158,7 @@ def upscale_video(  # pylint: disable=too-many-locals
                 )
             out.write(upscaled)
 
-    except cv.error as e:
+    except cv.error as e:  # pylint: disable=no-member
         raise RuntimeError(f"OpenCV processing error: {e}") from e
     finally:
         cap.release()
