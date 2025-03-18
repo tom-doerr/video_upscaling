@@ -8,7 +8,6 @@ import argparse
 import sys
 import traceback
 from pathlib import Path
-from typing import NoReturn
 
 import cv2 as cv  # pylint: disable=import-error,no-member
 from . import __version__
