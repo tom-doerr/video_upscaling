@@ -28,8 +28,8 @@ def parse_args() -> argparse.Namespace:
         prog="upscale-video",
         description="Upscale video dimensions using spatial interpolation methods",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        epilog="Note: Output video format is determined by the file extension "
-        "(supports .mp4, .avi, .mov)",
+        epilog="Note: Output video format is determined by the file extension\n"
+        "Supported formats: .mp4 (H.264), .avi (XVID), .mov (Motion-JPEG)",
     )
     parser.add_argument(
         "--version", action="version", version=f"%(prog)s {__version__}"

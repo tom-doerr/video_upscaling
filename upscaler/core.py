@@ -151,35 +151,6 @@ def _create_video_writer(
     return out
 
 
-def _select_video_codec() -> (
-    tuple[int, list[str]]
-):  # pylint: disable=no-member,unsubscriptable-object
-    """Select appropriate video codec with validation.
-
-    Returns:
-        Tuple containing fourcc code and list of tried codecs
-
-    Raises:
-        RuntimeError: If no valid codec could be initialized
-    """
-    codec_priority = [
-        "mp4v",  # MPEG-4 Part 2 (required for .mp4)
-        "h264",  # H.264/AVC (better compatibility than avc1)
-        "xvid",  # XVID (better for .avi)
-        "mjpg",  # Motion-JPEG (for .mov)
-    ]
-    for codec in codec_priority:
-        fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
-        if fourcc != 0:
-            validate_codec(fourcc)
-            return fourcc, codec_priority
-    validate_codec(0)  # Will throw error
-    raise RuntimeError(
-        "No valid video codec found - tried codecs: "  # pragma: no cover
-        f"{codec_priority}. Verify OpenCV installation supports at least one "
-        "of these codecs."
-    )
-
 
 def _validate_input_paths(input_path: Path, output_path: Path) -> None:
     """Validate input/output paths meet requirements.
