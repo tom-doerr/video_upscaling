@@ -113,7 +113,7 @@ def main() -> None:
         sys.exit(2)
     except Exception as e:  # pylint: disable=broad-except
         print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
-        if "args" in locals() and args.debug:  # Safer check for debug mode
+        if args.debug if "args" in locals() else False:  # Safer debug check
             traceback.print_exc()
         sys.exit(3)
 

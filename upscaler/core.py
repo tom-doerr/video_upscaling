@@ -35,7 +35,24 @@ def process_frames(
     cap: cv.VideoCapture,
     scale_factor: float,
     interpolation: int,
-) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
+) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:  # type: ignore[name-defined]
+    """Process video frames with enhanced validation and error handling.
+    
+    Args:
+        cap: OpenCV video capture object (must be already opened)
+        scale_factor: Scaling multiplier (>=1)
+        interpolation: OpenCV interpolation method constant
+        
+    Yields:
+        Tuple containing:
+        - original_width: Source frame width in pixels
+        - original_height: Source frame height in pixels
+        - upscaled_frame: Processed frame as numpy array
+        
+    Raises:
+        RuntimeError: If frame processing fails at any stage
+            or empty frame is received
+    """
     """Process video frames with enhanced validation and error handling.
 
     Args:
@@ -120,6 +137,26 @@ def _create_video_writer(
     frame_size: tuple[int, int],
     codec_priority: list[str],
 ) -> cv.VideoWriter:
+    """Create and validate video writer object with dimension checks.
+    
+    Args:
+        output_path: Path for output video file
+        fourcc: OpenCV fourcc codec code
+        fps: Frame rate of output video
+        frame_size: Tuple of (width, height) for output frames
+        codec_priority: List of codecs tried for error reporting
+        
+    Returns:
+        OpenCV VideoWriter object
+        
+    Raises:
+        RuntimeError: If video writer cannot be initialized
+        ValueError: For invalid frame dimensions
+    """
+    if frame_size[0] <= 0 or frame_size[1] <= 0:
+        raise ValueError(
+            f"Invalid frame dimensions {frame_size} - must be positive integers"
+        )
     """Create and validate video writer object."""
     out = cv.VideoWriter(str(output_path), fourcc, fps, frame_size)
     if not out.isOpened():
@@ -131,6 +168,14 @@ def _create_video_writer(
 
 
 def _select_video_codec() -> tuple[int, list[str]]:
+    """Select appropriate video codec with validation.
+    
+    Returns:
+        Tuple containing fourcc code and list of tried codecs
+        
+    Raises:
+        RuntimeError: If no valid codec could be initialized
+    """
     """Select appropriate video codec with validation.
 
     Returns:
