@@ -84,7 +84,7 @@ def main() -> NoReturn:
         if args.output.suffix.lower() not in (".mp4", ".avi", ".mov"):
             raise ValueError(
                 f"Unsupported output format '{args.output.suffix}'. "
-                "Supported formats: .mp4, .avi, .mov (case-insensitive)"
+                "Supported formats: .mp4 (MPEG-4), .avi (AVI), .mov (QuickTime)"
             )
 
         # Map interpolation names to OpenCV constants with quality notes

@@ -2,7 +2,8 @@
 
 import os
 from pathlib import Path
-from typing import Dict, Generator, Tuple
+from typing import Dict, Generator, Tuple, Any
+import numpy as np
 import cv2 as cv  # pylint: disable=import-error
 
 # pylint: disable=no-member
@@ -35,7 +36,7 @@ def process_frames(
     cap: cv.VideoCapture,
     scale_factor: float,
     interpolation: int,
-) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:  # type: ignore[name-defined]
+) -> Generator[Tuple[int, int, np.ndarray], None, None]:
     """Process video frames with enhanced validation and error handling.
 
     Args:
@@ -180,6 +181,9 @@ def upscale_video(  # pylint: disable=too-many-branches
     interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method with validation.
+
+    Example:
+        >>> upscale_video(Path("input.mp4"), Path("output.mp4"), 2.0)
 
     Example:
         >>> upscale_video(Path("input.mp4"), Path("output.mp4"), 2.0, cv.INTER_CUBIC)
