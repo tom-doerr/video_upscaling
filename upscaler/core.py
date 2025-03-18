@@ -8,7 +8,7 @@ import cv2 as cv  # pylint: disable=import-error
 # pylint: disable=no-member,no-name-in-module
 VALID_INTERPOLATIONS: dict[int, str] = {
     cv.INTER_NEAREST: "nearest neighbor",
-    cv.INTER_LINEAR: "bilinear", 
+    cv.INTER_LINEAR: "bilinear",
     cv.INTER_CUBIC: "bicubic",
     cv.INTER_LANCZOS4: "Lanczos",
 }
@@ -37,29 +37,16 @@ def process_frames(
     interpolation: int,
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
     """Process video frames with enhanced validation and error handling.
-    
+
     Args:
         cap: OpenCV video capture object (must be already opened)
         scale_factor: Scaling multiplier (>=1)
         interpolation: OpenCV interpolation method constant
 
     Yields:
-        Tuple containing original width, height and upscaled frame
-
-    Raises:
-        RuntimeError: If frame processing fails or empty frame received
-    """
-    """Process video frames with enhanced validation and error handling.
-
-    Args:
-        cap: OpenCV video capture object (must be already opened)
-        scale_factor: Integer scaling multiplier (>=1)
-        interpolation: OpenCV interpolation method constant
-
-    Yields:
         Tuple containing:
         - original_width: Source frame width in pixels
-        - original_height: Source frame height in pixels
+        - original_height: Source frame height in pixels 
         - upscaled_frame: Processed frame as numpy array
 
     Raises:
@@ -145,17 +132,12 @@ def _create_video_writer(
 
 def _select_video_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation.
-    
+
     Returns:
         Tuple containing fourcc code and list of tried codecs
         
     Raises:
         RuntimeError: If no valid codec could be initialized
-    """
-    """Select appropriate video codec with validation.
-
-    Returns:
-        Tuple containing fourcc code and list of tried codecs
     """
     codec_priority = [
         "h264",  # Broadly compatible H.264
