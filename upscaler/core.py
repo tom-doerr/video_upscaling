@@ -155,8 +155,8 @@ def _select_video_codec() -> tuple[int, str]:
     """Select appropriate video codec with validation."""
     codec_priority = [
         ("avc1", "H.264/MPEG-4 AVC"),  # Modern compatibility
-        ("mp4v", "MPEG-4 Part 2"),     # Legacy format
-        ("X264", "X264 encoder"),      # Alternative encoder
+        ("mp4v", "MPEG-4 Part 2"),  # Legacy format
+        ("X264", "X264 encoder"),  # Alternative encoder
     ]
     for codec, description in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
@@ -249,7 +249,7 @@ def upscale_video(
         _select_video_codec()[0],  # Get codec from selector
         fps,
         output_width,
-        output_height
+        output_height,
     )
 
     try:
