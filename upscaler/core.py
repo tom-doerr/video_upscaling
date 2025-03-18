@@ -39,7 +39,6 @@ def process_frames(
         ret, frame = cap.read()
         if not ret:
             break
-            
         if frame.size == 0:
             raise RuntimeError(f"Received empty frame at position {frame_count}")
 
@@ -57,7 +56,7 @@ def process_frames(
         raise RuntimeError("No frames processed - input video may be corrupted")
 
 def upscale_video(
-    input_path: Path,
+    input_path: Path,  # pylint: disable=too-many-locals
     output_path: Path,
     scale_factor: int,
     interpolation: int = cv.INTER_CUBIC,
@@ -145,7 +144,7 @@ def upscale_video(
 
     try:
         # Process frames and write output
-        for orig_width, orig_height, upscaled in process_frames(cap, scale_factor, interpolation):
+        for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
             if (upscaled.shape[1], upscaled.shape[0]) != (output_width, output_height):
                 raise RuntimeError(
                     f"Frame size mismatch: Expected {output_width}x{output_height}, "

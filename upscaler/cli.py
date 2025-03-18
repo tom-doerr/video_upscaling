@@ -41,7 +41,6 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     """Command line interface entry point for video upscaling."""
     args = parse_args()
-    
     # Validate scale factor early
     if args.scale < 1:
         raise ValueError(f"Invalid scale factor {args.scale} - must be ≥1")
