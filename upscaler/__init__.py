@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 Features:
-
-Features:
 - Multiple interpolation algorithms (nearest, linear, cubic, Lanczos)
 - Preservation of original frame rate and aspect ratio
 - Streaming processing for memory efficiency

@@ -5,9 +5,7 @@ from pathlib import Path
 from typing import Generator, Tuple, Dict
 import cv2 as cv  # pylint: disable=import-error
 
-# pylint: disable=no-member
-
-
+# pylint: disable=no-member,no-name-in-module
 VALID_INTERPOLATIONS = {
     cv.INTER_NEAREST: "nearest neighbor",  # pylint: disable=no-member
     cv.INTER_LINEAR: "bilinear",  # pylint: disable=no-member
@@ -15,6 +13,23 @@ VALID_INTERPOLATIONS = {
     cv.INTER_LANCZOS4: "Lanczos",  # pylint: disable=no-member
 }
 
+
+def generate_test_pattern(width: int, height: int) -> cv.typing.MatLike:
+    """Generate a test pattern video frame for verification.
+    
+    Args:
+        width: Pattern width in pixels
+        height: Pattern height in pixels
+        
+    Returns:
+        Generated frame with test pattern
+    """
+    frame = np.zeros((height, width, 3), dtype=np.uint8)
+    cv.line(frame, (0, 0), (width, height), (0, 255, 0), 2)
+    cv.line(frame, (width, 0), (0, height), (0, 255, 0), 2)
+    cv.putText(frame, f"{width}x{height}", (10, height-10), 
+              cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    return frame
 
 def validate_codec(fourcc: int) -> None:
     """Validate video codec is supported.
@@ -175,10 +190,10 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements,too-ma
     # Set up output video codec and writer with prioritized codec list
     fourcc = 0
     supported_codecs: Dict[str, str] = {
-        "avc1": "H.264/MPEG-4 AVC (best modern compatibility)",
         "mp4v": "MPEG-4 Part 2 (legacy)",
+        "avc1": "H.264/MPEG-4 AVC (modern compatibility)",
+        "h264": "Alternative H.264 codec",
         "X264": "X264 encoder",
-        "XVID": "XVID MPEG-4",
     }
     attempted_codecs = []
     for codec in supported_codecs:
