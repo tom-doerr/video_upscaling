@@ -6,10 +6,10 @@ import cv2 as cv  # pylint: disable=import-error
 
 def validate_codec(fourcc: int) -> None:
     """Validate video codec is supported.
-    
+
     Args:
         fourcc: OpenCV fourcc code
-        
+
     Raises:
         RuntimeError: If codec is not supported
     """
@@ -19,18 +19,17 @@ def validate_codec(fourcc: int) -> None:
             "(supported formats: .mp4, .avi, .mov)"
         )
 
+
 def process_frames(
-    cap: cv.VideoCapture,
-    scale_factor: int,
-    interpolation: int
+    cap: cv.VideoCapture, scale_factor: int, interpolation: int
 ) -> tuple[int, int, int]:
     """Process video frames and yield upscaled versions.
-    
+
     Args:
         cap: OpenCV video capture object
         scale_factor: Scaling multiplier
         interpolation: OpenCV interpolation method
-        
+
     Yields:
         Tuple of (original width, original height, upscaled frame)
     """
@@ -54,6 +53,7 @@ def process_frames(
 
     if frame_count == 0:
         raise RuntimeError("No frames processed - input video may be corrupted")
+
 
 def upscale_video(  # pylint: disable=too-many-locals
     input_path: Path,
@@ -122,7 +122,12 @@ def upscale_video(  # pylint: disable=too-many-locals
         )
 
     # Validate interpolation method
-    if interpolation not in {cv.INTER_NEAREST, cv.INTER_LINEAR, cv.INTER_CUBIC, cv.INTER_LANCZOS4}:
+    if interpolation not in {
+        cv.INTER_NEAREST,
+        cv.INTER_LINEAR,
+        cv.INTER_CUBIC,
+        cv.INTER_LANCZOS4,
+    }:
         raise ValueError(f"Invalid interpolation method: {interpolation}")
 
     # Set up output video codec and writer

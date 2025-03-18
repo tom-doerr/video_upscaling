@@ -12,10 +12,10 @@ from .core import upscale_video
 
 def parse_args() -> argparse.Namespace:
     """Parse and validate command line arguments.
-    
+
     Returns:
         Parsed arguments namespace
-        
+
     Raises:
         SystemExit: For invalid arguments or help request
     """
@@ -37,6 +37,7 @@ def parse_args() -> argparse.Namespace:
     )
 
     return parser.parse_args()
+
 
 def main() -> None:
     """Command line interface entry point for video upscaling."""
