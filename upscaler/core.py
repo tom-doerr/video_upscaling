@@ -8,7 +8,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
     input_path: Path,
     output_path: Path,
     scale_factor: int,
-    interpolation: int = cv2.INTER_CUBIC,
+    interpolation: int = cv.INTER_CUBIC,
 ) -> None:
     """Upscale video frames using specified interpolation method.
 
@@ -31,9 +31,9 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         )
 
     # Get and validate video properties
-    fps: float = cap.get(cv2.CAP_PROP_FPS)
-    width: int = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height: int = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps: float = cap.get(cv.CAP_PROP_FPS)
+    width: int = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+    height: int = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
     if fps <= 0:
         raise ValueError(f"Invalid frame rate {fps} - must be positive")
     if width <= 0 or height <= 0:
