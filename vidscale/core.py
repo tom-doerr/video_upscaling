@@ -19,16 +19,16 @@ def upscale_image(input_path: Path, output_path: Path, scale_factor: int = 2) ->
     """
     if scale_factor < 1:
         raise ValueError("Scale factor must be ≥1")
-    img = cv2.imread(str(input_path))
+    img = cv2.imread(str(input_path))  # pylint: disable=no-member
     if img is None:
         raise ValueError(f"Could not read image from {input_path}")
     height, width = img.shape[:2]
-    upscaled = cv2.resize(
+    upscaled = cv2.resize(  # pylint: disable=no-member
         img,
         (width * scale_factor, height * scale_factor),
-        interpolation=cv2.INTER_CUBIC,
+        interpolation=cv2.INTER_CUBIC,  # pylint: disable=no-member
     )
-    cv2.imwrite(str(output_path), upscaled)
+    cv2.imwrite(str(output_path), upscaled)  # pylint: disable=no-member
 
 
 def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) -> None:
