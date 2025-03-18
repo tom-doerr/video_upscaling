@@ -4,12 +4,24 @@ from pathlib import Path
 import cv2  # pylint: disable=import-error
 
 
-def upscale_video(
+def upscale_video(  # pylint: disable=too-many-locals
     input_path: Path,
     output_path: Path,
     scale_factor: int,
     interpolation: int = cv2.INTER_CUBIC,
 ) -> None:
+    """Upscale video frames using specified interpolation method.
+    
+    Args:
+        input_path: Path to input video file
+        output_path: Path for output video file
+        scale_factor: Multiplier for video dimensions (must be ≥1)
+        interpolation: OpenCV interpolation method constant to use
+        
+    Raises:
+        ValueError: For invalid inputs or scaling parameters
+        RuntimeError: If video processing fails at any stage
+    """
     """Upscale video frames using specified interpolation method.
 
     Args:
