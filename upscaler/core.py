@@ -199,9 +199,10 @@ def upscale_video(  # pylint: disable=too-many-branches
         interpolation: OpenCV interpolation method constant to use
 
     Raises:
-        ValueError: For invalid paths or scaling parameters
+        ValueError: For invalid paths, scaling parameters, or unsupported interpolation
         RuntimeError: If video processing fails at any stage
         FileNotFoundError: If input file doesn't exist
+        PermissionError: For output directory write issues
 
     Maintains original frame rate and aspect ratio using streaming processing.
     """
