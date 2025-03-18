@@ -155,7 +155,7 @@ def _select_video_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation."""
     codec_priority = [
         "avc1",  # H.264/MPEG-4 AVC
-        "mp4v",  # MPEG-4 Part 2 
+        "mp4v",  # MPEG-4 Part 2
         "X264",  # Alternative encoder
     ]
     for codec in codec_priority:
@@ -259,7 +259,10 @@ def upscale_video(
         for frame_count, (_, _, upscaled) in enumerate(
             process_frames(cap, scale_factor, interpolation), 1
         ):
-            if upscaled.shape[1] != output_dims[0] or upscaled.shape[0] != output_dims[1]:
+            if (
+                upscaled.shape[1] != output_dims[0]
+                or upscaled.shape[0] != output_dims[1]
+            ):
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
                     f"Expected {output_dims[0]}x{output_dims[1]}, "
