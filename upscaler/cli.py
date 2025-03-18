@@ -60,10 +60,10 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> NoReturn:
     """Command line interface entry point for video upscaling.
-    
+
     Handles argument parsing, validation, and error reporting.
     Exits with appropriate status codes based on error type.
-    
+
     Raises:
         SystemExit: Always exits with status code indicating success or failure
     """
