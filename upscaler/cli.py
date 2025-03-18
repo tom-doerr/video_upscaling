@@ -6,8 +6,13 @@ import cv2  # pylint: disable=import-error
 from .core import upscale_video
 
 
-def main():
-    """Command line interface for video upscaling."""
+def main() -> None:
+    """Command line interface for video upscaling.
+    
+    Raises:
+        ValueError: If invalid arguments are provided
+        RuntimeError: If video processing fails
+    """
     parser = argparse.ArgumentParser(
         description="Upscale video using interpolation methods"
     )
@@ -28,10 +33,10 @@ def main():
 
     # Map interpolation names to OpenCV constants
     interpolation_map = {
-        "nearest": cv2.INTER_NEAREST,
-        "linear": cv2.INTER_LINEAR,
-        "cubic": cv2.INTER_CUBIC,
-        "lanczos": cv2.INTER_LANCZOS4,
+        "nearest": cv2.INTER_NEAREST,  # Fastest but lowest quality
+        "linear": cv2.INTER_LINEAR,    # Balance of speed/quality
+        "cubic": cv2.INTER_CUBIC,     # Slower but higher quality (default)
+        "lanczos": cv2.INTER_LANCZOS4, # Highest quality but slowest
     }
 
     upscale_video(
