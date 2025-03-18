@@ -14,7 +14,6 @@ VALID_INTERPOLATIONS = {
 }
 
 
-
 def validate_codec(fourcc: int) -> None:
     """Validate video codec is supported.
 
