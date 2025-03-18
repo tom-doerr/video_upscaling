@@ -39,7 +39,7 @@ vidscale video input.mp4 output.mp4 --scale 2
 
 ## Examples
 
-Upscale image by 3x:
+Upscale image by 3×:
 ```bash
 vidscale image photo.jpg upscaled_photo.jpg --scale 3
 ```
