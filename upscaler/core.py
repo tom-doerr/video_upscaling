@@ -60,7 +60,7 @@ def process_frames(
             break
         if frame is None or frame.size == 0:
             raise RuntimeError(
-                f"Received invalid frame at position {frame_count} (0-based index)"
+                f"Received invalid frame {frame_count} (size={frame.size if frame else 0})"
             )
 
         upscaled = cv.resize(
@@ -205,7 +205,7 @@ def _validate_input_paths(input_path: Path, output_path: Path) -> None:
         raise PermissionError(f"Output directory not writable: {output_path.parent}")
 
 
-def _select_output_codec() -> tuple[int, list[str]]:
+def _select_video_codec() -> tuple[int, list[str]]:
     """Select appropriate video codec with validation.
 
     Returns:
@@ -306,7 +306,7 @@ def upscale_video(
         )
 
     # Set up output video codec and writer
-    codec_info = _select_output_codec()
+    codec_info = _select_video_codec()
     output_dims = (width * scale_factor, height * scale_factor)
     if output_dims[0] > 7680 or output_dims[1] > 4320:  # 8K resolution check
         raise ValueError(

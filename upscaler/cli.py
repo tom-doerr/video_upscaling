@@ -52,7 +52,7 @@ def parse_args() -> argparse.Namespace:
             "cubic",
             "lanczos",
         ],
-        help="Interpolation algorithm (nearest=fastest, lanczos=best quality)",
+        help="Interpolation algorithm (nearest=fastest, lanczos=highest quality)",
     )
     parser.add_argument(
         "--debug",
@@ -121,7 +121,7 @@ def main() -> None:
         sys.exit(1)
     except PermissionError as e:
         print(f"Permission error: {e}", file=sys.stderr)
-        sys.exit(4)
+        sys.exit(3)
     except (RuntimeError, OSError) as e:
         print(f"Processing error: {e}", file=sys.stderr)
         sys.exit(2)
