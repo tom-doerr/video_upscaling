@@ -53,12 +53,22 @@ def upscale_video(input_path: Path, output_path: Path, scale_factor: int = 2) ->
         subprocess.run(["ffmpeg", "-version"], check=True, capture_output=True)
     except (subprocess.CalledProcessError, FileNotFoundError):
         raise RuntimeError("FFmpeg is required for video processing") from None
+    if not input_path.exists():
+        raise ValueError(f"Input file {input_path} does not exist")
+        
     temp_dir = input_path.parent / "temp_frames"
     temp_dir.mkdir(exist_ok=True)
+    
     # Extract frames
-    subprocess.run(
-        ["ffmpeg", "-i", str(input_path), str(temp_dir / "frame_%04d.png")], check=True
-    )
+    try:
+        subprocess.run(
+            ["ffmpeg", "-i", str(input_path), str(temp_dir / "frame_%04d.png")], 
+            check=True,
+            capture_output=True,
+            text=True
+        )
+    except subprocess.CalledProcessError as e:
+        raise ValueError(f"Failed to extract frames: {e.stderr}") from e
     # Process frames
     for frame_path in temp_dir.glob("*.png"):
         upscale_image(frame_path, frame_path, scale_factor)
