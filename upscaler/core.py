@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from typing import Generator, Tuple
+from typing import Dict, Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error
 
 # pylint: disable=no-member,no-name-in-module
