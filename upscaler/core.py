@@ -192,6 +192,13 @@ def upscale_video(
 
     Maintains original frame rate and aspect ratio using streaming processing.
     """
+    
+    # Validate and prepare paths first
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if not output_path.parent.is_dir():
+        raise RuntimeError(f"Failed to create output directory: {output_path.parent}")
+    if not os.access(output_path.parent, os.W_OK):
+        raise PermissionError(f"Write access denied to: {output_path.parent}")
 
     def _validate_inputs() -> None:
         """Validate all input parameters and paths.
@@ -216,11 +223,6 @@ def upscale_video(
             raise ValueError(f"Scale factor must be >=1 (got {scale_factor})")
 
     _validate_inputs()
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    if not output_path.parent.is_dir():
-        raise RuntimeError(f"Failed to create output directory: {output_path.parent}")
-    if not os.access(output_path.parent, os.W_OK):
-        raise PermissionError(f"Write access denied to: {output_path.parent}")
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
@@ -239,7 +241,8 @@ def upscale_video(
             f"Valid methods: {', '.join(VALID_INTERPOLATIONS.values())}"
         )
 
-    # Set up output video codec and writer with modern codec priority
+    # Set up output video codec and writer with validated codec
+    fourcc, codec_priority = _select_video_codec()
     output_width, output_height = width * scale_factor, height * scale_factor
     if output_width > 7680 or output_height > 4320:  # 8K resolution check
         raise ValueError(

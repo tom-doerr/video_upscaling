@@ -22,6 +22,7 @@ def parse_args() -> argparse.Namespace:
         SystemExit: For invalid arguments or help request
     """
     parser = argparse.ArgumentParser(
+        prog="upscale-video",
         description="Upscale video dimensions using spatial interpolation methods",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
@@ -53,8 +54,14 @@ def main() -> None:
     Raises:
         SystemExit: Always exits with status code
     """
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}"
+    )
+
     try:
-        args = parse_args()
+        args = parser.parse_args()
         # Validate scale factor early
         if args.scale < 1:
             raise ValueError(f"Invalid scale factor {args.scale} - must be >= 1")
