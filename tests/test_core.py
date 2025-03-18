@@ -1,7 +1,7 @@
 """Unit tests for core video upscaling functionality."""
 
-from upscaler.core import upscale_video, _validate_input_paths  # pylint: disable=import-error
 import pytest
+from upscaler.core import upscale_video, _validate_input_paths  # pylint: disable=import-error
 
 def test_validate_input_paths_nonexistent_file(tmp_path):
     """Test validation fails when input file doesn't exist."""
