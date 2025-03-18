@@ -2,7 +2,7 @@
 
 import argparse
 from pathlib import Path
-import cv2  # pylint: disable=import-error
+import cv2 as cv  # pylint: disable=import-error
 from .core import upscale_video
 
 
@@ -40,7 +40,7 @@ def main() -> None:
         "nearest": cv2.INTER_NEAREST,  # Fastest but lowest quality
         "linear": cv2.INTER_LINEAR,  # Balance of speed/quality
         "cubic": cv2.INTER_CUBIC,  # Slower but higher quality (default)
-        "lanczos": cv2.INTER_LANCZOS4,  # Highest quality but slowest
+        "lanczos": cv.INTER_LANCZOS4,  # Highest quality but slowest
     }
 
     upscale_video(

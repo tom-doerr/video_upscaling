@@ -4,7 +4,7 @@ from pathlib import Path
 import cv2  # pylint: disable=import-error
 
 
-def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
+def upscale_video(
     input_path: Path,
     output_path: Path,
     scale_factor: int,
@@ -23,7 +23,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         RuntimeError: If video processing fails at any stage
     """
     # Open input video with validation
-    cap = cv2.VideoCapture(str(input_path))
+    cap = cv.VideoCapture(str(input_path))
     if not cap.isOpened():
         raise ValueError(
             f"Could not open video file {input_path} - "
@@ -45,7 +45,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         raise ValueError(f"Scale factor must be ≥1, got {scale_factor}")
 
     # Set up output video codec and writer
-    fourcc: int = cv2.VideoWriter_fourcc(*"mp4v")
+    fourcc: int = cv.VideoWriter_fourcc(*"mp4v")
     if fourcc == 0:
         raise RuntimeError("Failed to initialize MP4V codec - check codec support")
     output_width: int = width * scale_factor
@@ -54,7 +54,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         raise ValueError(
             f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
         )
-    out = cv2.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))
+    out = cv.VideoWriter(str(output_path), fourcc, fps, (output_width, output_height))
 
     if not out.isOpened():
         raise RuntimeError(
@@ -72,7 +72,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
             if frame.size == 0:
                 raise RuntimeError(f"Received empty frame at position {frame_count}")
 
-            upscaled = cv2.resize(
+            upscaled = cv.resize(
                 frame,
                 None,
                 fx=scale_factor,
@@ -85,7 +85,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-branches
         if frame_count == 0:
             raise RuntimeError("No frames processed - input video may be corrupted")
 
-    except cv2.error as e:
+    except cv.error as e:
         raise RuntimeError(f"OpenCV processing error: {e}") from e
     finally:
         cap.release()
