@@ -36,9 +36,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("input", type=Path, help="Input video path")
     parser.add_argument("output", type=Path, help="Output video path")
     parser.add_argument(
-        "--scale", 
-        type=int, 
-        required=True, 
+        "--scale",
+        type=int,
+        required=True,
         help="Scaling factor (integer multiplier, e.g. 2 doubles each dimension)"
     )
     parser.add_argument(

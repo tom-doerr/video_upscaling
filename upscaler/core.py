@@ -77,23 +77,15 @@ def process_frames(
 def _get_video_properties(cap: cv.VideoCapture) -> tuple[float, int, int]:
     """Extract and validate video properties from capture object.
     
+    Args:
+        cap: OpenCV video capture object
+    
     Returns:
         Tuple containing (fps: float, width: int, height: int)
     
     Raises:
         RuntimeError: If any property cannot be retrieved
         ValueError: For invalid property values
-    """
-    """Get and validate essential video properties from capture object.
-
-    Args:
-        cap: OpenCV video capture object
-
-    Returns:
-        Tuple of (fps, width, height)
-
-    Raises:
-        RuntimeError: If any property is invalid
     """
 
     def get_checked_prop(prop_id: int, name: str) -> float:
@@ -206,7 +198,9 @@ def upscale_video(
                 f"Output directory not writable: {output_path.parent}"
             )
         if scale_factor < 1:
-            raise ValueError(f"Scale factor must be >=1 (got {scale_factor}). Use --scale 2 to double video dimensions")
+            raise ValueError(
+                f"Scale factor must be >=1 (got {scale_factor}). "
+                "Use --scale 2 to double video dimensions")
 
     _validate_inputs()
     # Open input video with validation
