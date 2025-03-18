@@ -5,6 +5,14 @@ from typing import Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error,no-member
 
 
+VALID_INTERPOLATIONS = {
+    cv.INTER_NEAREST: "nearest neighbor",
+    cv.INTER_LINEAR: "bilinear",
+    cv.INTER_CUBIC: "bicubic",
+    cv.INTER_LANCZOS4: "Lanczos",
+}
+
+
 def validate_codec(fourcc: int) -> None:
     """Validate video codec is supported.
 
@@ -142,13 +150,7 @@ def upscale_video(  # pylint: disable=too-many-locals
         )
 
     # Validate interpolation method
-    valid_interpolations = {
-        cv.INTER_NEAREST: "nearest neighbor",  # pylint: disable=no-member
-        cv.INTER_LINEAR: "bilinear",  # pylint: disable=no-member
-        cv.INTER_CUBIC: "bicubic",  # pylint: disable=no-member
-        cv.INTER_LANCZOS4: "Lanczos",  # pylint: disable=no-member
-    }
-    if interpolation not in valid_interpolations:
+    if interpolation not in VALID_INTERPOLATIONS:
         raise ValueError(
             f"Invalid interpolation method: {interpolation}. "
             f"Valid methods: {', '.join(valid_interpolations.values())}"
@@ -183,7 +185,6 @@ def upscale_video(  # pylint: disable=too-many-locals
         frame_count = 0
         for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
             frame_count += 1
-            frame_count += 1  # Remove this duplicate increment if it exists
             if (upscaled.shape[1], upscaled.shape[0]) != (output_width, output_height):
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
