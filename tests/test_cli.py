@@ -83,6 +83,8 @@ def test_cli_video_overwrite_protection(tmp_path):
     )
     assert result.exit_code != 0
     assert "already exists" in result.output
+
+
 def test_cli_ffmpeg_missing(mocker, tmp_path):
     """Test FFmpeg missing error handling"""
     runner = CliRunner()
@@ -91,8 +93,9 @@ def test_cli_ffmpeg_missing(mocker, tmp_path):
     input_path.touch()
 
     # Simulate FFmpeg not being found
-    mocker.patch("vidscale.core._validate_ffmpeg",
-                side_effect=RuntimeError("FFmpeg is required"))
+    mocker.patch(
+        "vidscale.core._validate_ffmpeg", side_effect=RuntimeError("FFmpeg is required")
+    )
     result = runner.invoke(
         main, ["video", str(input_path), str(output_path), "--scale", "2"]
     )
