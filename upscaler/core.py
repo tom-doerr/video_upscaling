@@ -1,6 +1,6 @@
 """Core video upscaling functionality using OpenCV."""
 from pathlib import Path
-import cv2
+import cv2  # pylint: disable=import-error
 
 def upscale_video(
     input_path: Path,

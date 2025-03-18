@@ -1,7 +1,7 @@
 """Command line interface for video upscaling package."""
 import argparse
 from pathlib import Path
-import cv2
+import cv2  # pylint: disable=import-error
 from .core import upscale_video
 
 def main():
