@@ -171,9 +171,9 @@ def upscale_video(  # pylint: disable=too-many-locals
         raise ValueError(
             f"Output dimensions {output_width}x{output_height} exceed 8K UHD resolution"
         )
-    out = cv.VideoWriter(
+    out = cv.VideoWriter(  # pylint: disable=no-member
         str(output_path), fourcc, fps, (output_width, output_height)
-    )  # pylint: disable=no-member
+    )
 
     if not out.isOpened():
         raise RuntimeError(
