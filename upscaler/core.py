@@ -46,7 +46,7 @@ def process_frames(
     Yields:
         Tuple containing:
         - original_width: Source frame width in pixels
-        - original_height: Source frame height in pixels 
+        - original_height: Source frame height in pixels
         - upscaled_frame: Processed frame as numpy array
 
     Raises:
@@ -135,7 +135,7 @@ def _select_video_codec() -> tuple[int, list[str]]:
 
     Returns:
         Tuple containing fourcc code and list of tried codecs
-        
+
     Raises:
         RuntimeError: If no valid codec could be initialized
     """
