@@ -186,7 +186,7 @@ def _select_video_codec() -> tuple[int, list[str]]:
     """
     codec_priority = [
         "mp4v",  # MPEG-4 Part 2 (required for .mp4)
-        "h264",  # H.264/AVC (better compatibility than avc1)
+        "avc1",  # H.264/AVC (more common fourcc code)
         "xvid",  # XVID (better for .avi)
         "mjpg",  # Motion-JPEG (for .mov)
     ]
@@ -250,13 +250,8 @@ def upscale_video(
             "Use --scale 2 to double video dimensions"
         )
 
-    # Create output directory with validation
-    try:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-    except OSError as e:
-        raise RuntimeError(
-            f"Failed to create output directory {output_path.parent}: {e.strerror}"
-        ) from e
+    # Create output directory if needed
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     # Open input video with validation
     cap = cv.VideoCapture(str(input_path))  # pylint: disable=no-member
     if not cap.isOpened():
