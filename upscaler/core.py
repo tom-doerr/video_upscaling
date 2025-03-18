@@ -5,8 +5,8 @@ from pathlib import Path
 from typing import Dict, Generator, Tuple
 import cv2 as cv  # pylint: disable=import-error
 
-# pylint: disable=no-member,no-name-in-module
-VALID_INTERPOLATIONS: Dict[int, str] = {  # type: ignore[name-defined]
+# pylint: disable=no-member
+VALID_INTERPOLATIONS: Dict[int, str] = {
     cv.INTER_NEAREST: "nearest neighbor",
     cv.INTER_LINEAR: "bilinear",
     cv.INTER_CUBIC: "bicubic",

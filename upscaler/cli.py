@@ -64,11 +64,6 @@ def main() -> NoReturn:
     Handles argument parsing, validation, and error reporting.
     Exits with appropriate status codes based on error type.
 
-    Raises:
-        SystemExit: Always exits with status code indicating success or failure
-    """
-    """Command line interface entry point for video upscaling.
-
     Exit codes:
         0: Success
         1: Input validation error
@@ -76,7 +71,7 @@ def main() -> NoReturn:
         3: Unexpected error
 
     Raises:
-        SystemExit: Always exits with status code
+        SystemExit: Always exits with status code indicating success or failure
     """
 
     try:
