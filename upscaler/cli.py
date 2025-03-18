@@ -14,6 +14,7 @@ from .core import upscale_video
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse command line arguments with validation."""
     """Parse and validate command line arguments.
 
     Returns:
@@ -43,6 +44,11 @@ def parse_args() -> argparse.Namespace:
         default="cubic",
         choices=["nearest", "linear", "cubic", "lanczos"],
         help="Interpolation algorithm (nearest=fastest, lanczos=best quality)",
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Enable debug mode with stack traces on error",
     )
 
     return parser.parse_args()
@@ -105,7 +111,10 @@ def main() -> None:
         sys.exit(2)
     except Exception as e:  # pylint: disable=broad-except
         print(f"Unexpected error: {e.__class__.__name__} - {e}", file=sys.stderr)
-        sys.exit(3)  # Consider using sys.exc_info() for more details if needed
+        if args.debug:  # type: ignore
+            import traceback
+            traceback.print_exc()
+        sys.exit(3)
 
 
 if __name__ == "__main__":
