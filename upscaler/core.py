@@ -22,7 +22,7 @@ def validate_codec(fourcc: int) -> None:
 
 
 def process_frames(
-    cap: cv.VideoCapture,
+    cap: cv.VideoCapture,  # pylint: disable=no-member
     scale_factor: int,
     interpolation: int,  # pylint: disable=no-member
 ) -> Generator[Tuple[int, int, cv.typing.MatLike], None, None]:
@@ -137,10 +137,10 @@ def upscale_video(  # pylint: disable=too-many-locals
 
     fps: float = get_video_prop(cv.CAP_PROP_FPS)  # pylint: disable=no-member
     width: int = int(
-        get_video_prop(cv.CAP_PROP_FRAME_WIDTH)
+        get_video_prop(cv.CAP_PROP_FRAME_WIDTH)  # pylint: disable=no-member
     )  # pylint: disable=no-member
     height: int = int(
-        get_video_prop(cv.CAP_PROP_FRAME_HEIGHT)
+        get_video_prop(cv.CAP_PROP_FRAME_HEIGHT)  # pylint: disable=no-member
     )  # pylint: disable=no-member
     if fps <= 0:
         raise ValueError(f"Invalid frame rate {fps} - must be positive")
@@ -151,10 +151,10 @@ def upscale_video(  # pylint: disable=too-many-locals
 
     # Validate interpolation method
     valid_interpolations = {
-        cv.INTER_NEAREST: "nearest neighbor",
-        cv.INTER_LINEAR: "bilinear",
-        cv.INTER_CUBIC: "bicubic",
-        cv.INTER_LANCZOS4: "Lanczos",
+        cv.INTER_NEAREST: "nearest neighbor",  # pylint: disable=no-member
+        cv.INTER_LINEAR: "bilinear",  # pylint: disable=no-member
+        cv.INTER_CUBIC: "bicubic",  # pylint: disable=no-member
+        cv.INTER_LANCZOS4: "Lanczos",  # pylint: disable=no-member
     }
     if interpolation not in valid_interpolations:
         raise ValueError(
