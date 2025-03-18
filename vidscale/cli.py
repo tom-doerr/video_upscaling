@@ -39,10 +39,15 @@ def video(input_path, output_path, scale):
     input_path = Path(input_path)
     output_path = Path(output_path)
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
     try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        if output_path.exists():
+            raise FileExistsError(f"Output path {output_path} already exists")
         upscale_video(input_path, output_path, scale)
         click.echo(f"Successfully upscaled video by {scale}x")
-    except Exception as e:
+    except FileExistsError as e:
         click.echo(f"Error: {str(e)}", err=True)
+        raise SystemExit(1) from e
+    except Exception as e:
+        click.echo(f"Unexpected error: {str(e)}", err=True)
         raise SystemExit(1) from e

@@ -68,3 +68,18 @@ def test_cli_nonexistent_input(tmp_path):
     )
     assert result.exit_code != 0
     assert "does not exist" in result.output
+
+
+def test_cli_video_overwrite_protection(tmp_path):
+    """Test video upscaling CLI command prevents overwrites"""
+    runner = CliRunner()
+    input_path = tmp_path / "input.mp4"
+    output_path = tmp_path / "output.mp4"
+    input_path.touch()
+    output_path.touch()
+
+    result = runner.invoke(
+        main, ["video", str(input_path), str(output_path), "--scale", "2"]
+    )
+    assert result.exit_code != 0
+    assert "already exists" in result.output
