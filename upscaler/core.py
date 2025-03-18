@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from typing import Generator, Tuple, Dict
 import cv2 as cv  # pylint: disable=import-error
+import numpy as np
 
 # pylint: disable=no-member,no-name-in-module
 VALID_INTERPOLATIONS = {
@@ -27,7 +28,7 @@ def generate_test_pattern(width: int, height: int) -> cv.typing.MatLike:
     frame = np.zeros((height, width, 3), dtype=np.uint8)
     cv.line(frame, (0, 0), (width, height), (0, 255, 0), 2)
     cv.line(frame, (width, 0), (0, height), (0, 255, 0), 2)
-    cv.putText(frame, f"{width}x{height}", (10, height-10), 
+    cv.putText(frame, f"{width}x{height}", (10, height-10),
               cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     return frame
 
@@ -223,7 +224,7 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements,too-ma
         frame_count = 0
         for _, _, upscaled in process_frames(cap, scale_factor, interpolation):
             frame_count += 1
-            if (upscaled.shape[1] != output_width 
+            if (upscaled.shape[1] != output_width
                 or upscaled.shape[0] != output_height):
                 raise RuntimeError(
                     f"Frame size mismatch at frame {frame_count}: "
