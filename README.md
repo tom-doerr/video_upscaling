@@ -34,7 +34,7 @@ vidscale video input.mp4 output.mp4 --scale 2
 
 ## Options
 
-- `--scale` - Scaling factor (integer ≥1, default: 2)
+- `--scale` - Scaling factor (integer >=1, default: 2)
 - `--help` - Show help message for any command
 
 ## Examples

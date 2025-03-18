@@ -9,20 +9,17 @@ from vidscale.cli import main
 def test_cli_help():
     """Test CLI help command"""
     runner = CliRunner()
-    
     # Test main help
     result = runner.invoke(main, ["--help"])
     assert result.exit_code == 0
     assert "Video upscaling CLI tool" in result.output
     assert "image" in result.output
     assert "video" in result.output
-    
     # Test image command help
-    result = runner.invoke(main, ["image", "--help"]) 
+    result = runner.invoke(main, ["image", "--help"])
     assert result.exit_code == 0
     assert "Upscale an image" in result.output
     assert "--scale" in result.output
-    
     # Test video command help
     result = runner.invoke(main, ["video", "--help"])
     assert result.exit_code == 0
