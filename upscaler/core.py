@@ -157,7 +157,7 @@ def _select_video_codec() -> tuple[int, str]:
         ("avc1", "H.264/MPEG-4 AVC"),  # Modern compatibility
         ("mp4v", "MPEG-4 Part 2"),  # Legacy format
         ("X264", "X264 encoder"),  # Alternative encoder
-        ("MJPG", "Motion-JPEG"),    # Common fallback
+        ("MJPG", "Motion-JPEG"),  # Common fallback
     ]
     for codec, description in codec_priority:
         fourcc = cv.VideoWriter_fourcc(*codec)  # pylint: disable=no-member
@@ -272,5 +272,5 @@ def upscale_video(
     finally:
         # Ensure proper resource cleanup even if errors occur
         cap.release()
-        if 'out' in locals() and out.isOpened():
+        if "out" in locals() and out.isOpened():
             out.release()
