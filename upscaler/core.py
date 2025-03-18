@@ -1,6 +1,4 @@
-"""Core video upscaling functionality using OpenCV."""
-
-"""Core video processing functionality with type hints and error handling."""
+"""Core video upscaling functionality using OpenCV with type hints and error handling."""
 import os
 from pathlib import Path
 from typing import Generator, Tuple, Dict
@@ -169,13 +167,12 @@ def upscale_video(  # pylint: disable=too-many-locals,too-many-statements
     # Set up output video codec and writer with prioritized codec list
     fourcc = 0
     attempted_codecs = []
-    SUPPORTED_CODECS: Dict[str, str] = {
+    supported_codecs: Dict[str, str] = {
         "avc1": "H.264/MPEG-4 AVC (best modern compatibility)",
-        "mp4v": "MPEG-4 Part 2 (legacy)",
+        "mp4v": "MPEG-4 Part 2 (legacy)", 
         "X264": "X264 encoder",
-        "XVID": "XVID MPEG-4"
+        "XVID": "XVID MPEG-4",
     }
-    
     attempted_codecs = []
     for codec in SUPPORTED_CODECS:
         attempted_codecs.append(codec)
