@@ -1,3 +1,4 @@
+"""Package configuration for video upscaling tool."""
 from setuptools import setup, find_packages
 
 setup(

@@ -1,7 +1,6 @@
-import cv2
-import numpy as np
-from typing import Iterator, Tuple
+"""Core video upscaling functionality using OpenCV."""
 from pathlib import Path
+import cv2
 
 def upscale_video(
     input_path: Path,
@@ -26,7 +25,6 @@ def upscale_video(
     fps = cap.get(cv2.CAP_PROP_FPS)
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    
     # Set up output video
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(
