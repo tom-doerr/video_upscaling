@@ -69,6 +69,16 @@ def test_upscale_video_ffmpeg_failure(mock_run, tmp_path):
         upscale_video(input_path, tmp_path / "output.mp4", 2)
 
 
+def test_ffmpeg_validation():
+    """Test FFmpeg availability check"""
+    from vidscale.core import _validate_ffmpeg
+    _validate_ffmpeg()  # Should not raise if FFmpeg is available
+    
+    with patch("subprocess.run") as mock_run:
+        mock_run.side_effect = subprocess.CalledProcessError(1, "ffmpeg")
+        with pytest.raises(RuntimeError):
+            _validate_ffmpeg()
+
 def test_upscale_video(mocker, tmp_path):
     """Test video upscaling functionality with mocked FFmpeg"""
     # Mock FFmpeg calls to avoid actual video processing
