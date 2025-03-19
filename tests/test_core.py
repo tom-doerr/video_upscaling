@@ -6,7 +6,7 @@ from unittest.mock import patch
 import pytest
 import cv2  # pylint: disable=import-error
 import numpy as np
-from vidscale.core import upscale_image, upscale_video
+from vidscale.core import upscale_image, upscale_video, _validate_ffmpeg
 
 
 def test_upscale_image(tmp_path):
@@ -71,9 +71,7 @@ def test_upscale_video_ffmpeg_failure(mock_run, tmp_path):
 
 def test_ffmpeg_validation():
     """Test FFmpeg availability check"""
-    from vidscale.core import _validate_ffmpeg
     _validate_ffmpeg()  # Should not raise if FFmpeg is available
-    
     with patch("subprocess.run") as mock_run:
         mock_run.side_effect = subprocess.CalledProcessError(1, "ffmpeg")
         with pytest.raises(RuntimeError):

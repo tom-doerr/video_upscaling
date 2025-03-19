@@ -1,6 +1,5 @@
 """Tests for package metadata and structure"""
 
-import pytest
 from vidscale import __version__
 
 def test_package_version():
