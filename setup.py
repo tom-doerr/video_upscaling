@@ -2,6 +2,9 @@
 
 from setuptools import setup, find_packages
 
+with open("README.md", encoding="utf-8") as f:
+    long_description = f.read()
+
 setup(
     name="vidscale",
     version="0.1.0",
@@ -16,7 +19,7 @@ setup(
     author="Your Name",
     author_email="your.email@example.com",
     description="Video upscaling toolkit with CLI interface",
-    long_description=open("README.md", encoding="utf-8").read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/yourusername/vidscale",
     classifiers=[
