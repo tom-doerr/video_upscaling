@@ -4,12 +4,13 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="vidscale",
-    version="0.1.0",
+    name="upscaler",
+    version="0.1.2",
     packages=find_packages(),
-    install_requires=["opencv-python", "click", "ffmpeg-python"],
-    entry_points={"console_scripts": ["vidscale=vidscale.cli:main"]},
+    install_requires=["opencv-python", "click", "numpy"],
+    entry_points={"console_scripts": ["upscale-video=upscaler.cli:main"]},
     python_requires=">=3.8",
+)
 =======
 """Package setup configuration"""
 
